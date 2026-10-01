@@ -2,24 +2,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import capeTownAerial from "@/assets/cape-town-aerial.jpg";
+import { INSTITUTIONS, OTHER_COLLEGE } from "@/data/institutions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "residence24 | Student Accommodation in South Africa" },
+      { title: "Residence24 | Student Accommodation in South Africa" },
       {
         name: "description",
         content:
-          "residence24: find student accommodation across South Africa and calculate your total rent.",
+          "Find safe, affordable, inclusive student accommodation across all nine South African provinces.",
       },
       {
         property: "og:title",
-        content: "residence24 | Student Accommodation in South Africa",
+        content: "Residence24 | Student Accommodation in South Africa",
       },
       {
         property: "og:description",
         content:
-          "Find student accommodation across South Africa and calculate your total rent with residence24.",
+          "LGBTQ+ friendly, pet friendly and accessible student housing near every university.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,44 +29,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const DATA: Record<string, string[]> = {
-  "Eastern Cape": [
-    "Nelson Mandela University",
-    "Rhodes University",
-    "University of Fort Hare",
-    "Walter Sisulu University",
-  ],
-  "Free State": [
-    "Central University of Technology",
-    "University of the Free State",
-  ],
-  Gauteng: [
-    "Sefako Makgatho Health Sciences University",
-    "Tshwane University of Technology",
-    "University of Johannesburg",
-    "University of Pretoria",
-    "University of South Africa (Unisa)",
-    "University of the Witwatersrand",
-    "Vaal University of Technology",
-  ],
-  "KwaZulu-Natal": [
-    "Durban University of Technology",
-    "Mangosuthu University of Technology",
-    "University of KwaZulu-Natal",
-    "University of Zululand",
-  ],
-  Limpopo: ["University of Limpopo", "University of Venda"],
-  Mpumalanga: ["University of Mpumalanga"],
-  "Northern Cape": ["Sol Plaatje University"],
-  "North West": ["North-West University"],
-  "Western Cape": [
-    "Cape Peninsula University of Technology",
-    "Stellenbosch University",
-    "University of Cape Town",
-    "University of the Western Cape",
-  ],
-};
-const OTHER = "Other accredited college (TVET / private)";
+
+type FilterKey = "lgbtq" | "pet" | "accessible";
+const FILTERS: { id: FilterKey; icon: string; label: string }[] = [
+  { id: "lgbtq", icon: "🏳️‍🌈", label: "LGBTQ+ Friendly" },
+  { id: "pet", icon: "🐾", label: "Pet Friendly" },
+  { id: "accessible", icon: "♿", label: "Special Needs Accessible" },
+];
 
 const zar = new Intl.NumberFormat("en-ZA", {
   style: "currency",

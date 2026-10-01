@@ -1,23 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import capeTownAerial from "@/assets/cape-town-aerial.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ResRes | Student Accommodation in South Africa" },
+      { title: "residence24 | Student Accommodation in South Africa" },
       {
         name: "description",
         content:
-          "ResRes: find safe, affordable, inclusive student accommodation across South Africa.",
+          "residence24: find student accommodation across South Africa and calculate your total rent.",
       },
       {
         property: "og:title",
-        content: "ResRes | Student Accommodation in South Africa",
+        content: "residence24 | Student Accommodation in South Africa",
       },
       {
         property: "og:description",
         content:
-          "Find your perfect student residence — safe, affordable, inclusive accommodation across South Africa.",
+          "Find student accommodation across South Africa and calculate your total rent with residence24.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -25,17 +27,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-
-const SLIDES = [
-  {
-    label: "Western Cape",
-    url: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=2070&q=80",
-  },
-  {
-    label: "Gauteng",
-    url: "https://images.unsplash.com/photo-1577948000111-9c970dfe3206?auto=format&fit=crop&w=1974&q=80",
-  },
-];
 
 const DATA: Record<string, string[]> = {
   "Eastern Cape": [
@@ -76,82 +67,39 @@ const DATA: Record<string, string[]> = {
 };
 const OTHER = "Other accredited college (TVET / private)";
 
-const CHIPS = [
-  { key: "LGBTQ+ friendly", label: "🏳️‍🌈 LGBTQ+ Friendly" },
-  { key: "Pet friendly", label: "🐾 Pet Friendly" },
-  { key: "Special needs accessible", label: "♿ Special Needs Accessible" },
-];
-
 const zar = new Intl.NumberFormat("en-ZA", {
   style: "currency",
   currency: "ZAR",
 });
-
-const glass = "rgba(255,255,255,.14)";
-const line = "rgba(255,255,255,.3)";
 
 function Index() {
   const [mode, setMode] = useState<"find" | "list">("find");
   const [query, setQuery] = useState("");
   const [province, setProvince] = useState("");
   const [university, setUniversity] = useState("");
-  const [pressed, setPressed] = useState<Record<string, boolean>>({});
   const [summary, setSummary] = useState("");
   const [rent, setRent] = useState("");
   const [months, setMonths] = useState("");
-  const [slideIdx, setSlideIdx] = useState(0);
-  const [loadedSlides, setLoadedSlides] = useState<typeof SLIDES>([]);
-  const timerRef = useRef<number | null>(null);
-
-  // Preload background slides, skipping any that fail
-  useEffect(() => {
-    let cancelled = false;
-    Promise.all(
-      SLIDES.map(
-        (s) =>
-          new Promise<(typeof SLIDES)[number] | null>((res) => {
-            const im = new Image();
-            im.onload = () => res(s);
-            im.onerror = () => res(null);
-            im.src = s.url;
-          }),
-      ),
-    ).then((ok) => {
-      if (cancelled) return;
-      const valid = ok.filter(Boolean) as typeof SLIDES;
-      setLoadedSlides(valid);
-      const reduce = window.matchMedia(
-        "(prefers-reduced-motion: reduce)",
-      ).matches;
-      if (valid.length > 1 && !reduce) {
-        timerRef.current = window.setInterval(
-          () => setSlideIdx((i) => (i + 1) % valid.length),
-          6000,
-        );
-      }
-    });
-    return () => {
-      cancelled = true;
-      if (timerRef.current) window.clearInterval(timerRef.current);
-    };
-  }, []);
+  const [calculation, setCalculation] = useState<{ total: number; rent: number; months: number } | null>(null);
+  const [calculationError, setCalculationError] = useState("");
 
   const universities = useMemo(
     () => (province ? (DATA[province] ?? []) : Object.values(DATA).flat()),
     [province],
   );
 
-  const rentNum = parseFloat(rent);
-  const monthsNum = parseInt(months, 10);
-  const bothEmpty = !rent && !months;
-  const valid =
-    !bothEmpty && rentNum >= 0 && monthsNum >= 1 && monthsNum <= 60;
-  const total = valid ? rentNum * monthsNum : 0;
-  const note = bothEmpty
-    ? ""
-    : valid
-      ? `${zar.format(rentNum)} × ${monthsNum} month${monthsNum > 1 ? "s" : ""}  ·  ${zar.format(rentNum * 12)} per year`
-      : "Enter a rent of R0 or more and 1–60 months.";
+  const calculateRent = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const rentNum = Number(rent);
+    const monthsNum = Number(months);
+    if (rent.trim() === "" || months.trim() === "" || !Number.isFinite(rentNum) || rentNum < 0 || !Number.isSafeInteger(monthsNum) || monthsNum < 1) {
+      setCalculation(null);
+      setCalculationError("Enter a valid monthly rent and a whole number of months (at least 1).");
+      return;
+    }
+    setCalculation({ total: rentNum * monthsNum, rent: rentNum, months: monthsNum });
+    setCalculationError("");
+  };
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,50 +107,24 @@ function Index() {
     if (query.trim()) parts.push(query.trim());
     if (province) parts.push(province);
     if (university) parts.push(university);
-    CHIPS.forEach((c) => pressed[c.key] && parts.push(c.key));
     setSummary(parts.join("  ·  "));
   };
 
   return (
-    <div
-      className="flex min-h-screen flex-col font-sans text-white"
-      style={{
-        background: "linear-gradient(135deg,#0f2027,#203a43,#2c5364)",
-      }}
-    >
-      {/* Background slider */}
-      <div className="fixed inset-0 -z-20" aria-hidden="true">
-        {loadedSlides.map((s, i) => (
-          <div
-            key={s.url}
-            className="absolute inset-0 bg-cover bg-center transition-opacity duration-[1200ms] ease-in-out"
-            style={{
-              backgroundImage: `url("${s.url}")`,
-              opacity: i === slideIdx ? 1 : 0,
-            }}
-          />
-        ))}
-      </div>
-      <div
-        className="fixed inset-0 -z-10"
-        aria-hidden="true"
-        style={{
-          background:
-            "linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.6))",
-        }}
-      />
+    <div className="relative isolate flex min-h-screen flex-col bg-background font-sans text-photo-foreground">
+      <img src={capeTownAerial} alt="Aerial view of Cape Town Stadium and Table Mountain" width={1920} height={1280} className="fixed inset-0 -z-20 h-full w-full object-cover object-center" />
+      <div className="fixed inset-0 -z-10 bg-photo-scrim" aria-hidden="true" />
 
       <nav
-        className="flex flex-wrap items-center justify-between gap-3 border-b px-[5vw] py-4 backdrop-blur-[14px]"
-        style={{ background: glass, borderColor: line }}
+        className="flex flex-wrap items-center justify-between gap-3 border-b border-photo-line bg-photo-glass px-[5vw] py-4 backdrop-blur-[14px]"
       >
-        <div className="text-2xl font-bold tracking-tight">ResRes</div>
+        <div className="text-2xl font-bold">residence24</div>
         <div className="flex gap-5">
           {["Home", "About", "Help", "Login"].map((l) => (
             <a
               key={l}
               href="#"
-              className="font-light text-white/90 hover:text-white hover:underline"
+              className="font-light text-photo-foreground/90 hover:text-photo-foreground hover:underline"
             >
               {l}
             </a>
@@ -221,8 +143,7 @@ function Index() {
         <div
           role="group"
           aria-label="What would you like to do"
-          className="mb-[18px] inline-flex rounded-full border p-1"
-          style={{ background: glass, borderColor: line }}
+          className="mb-[18px] inline-flex rounded-full border border-photo-line bg-photo-glass p-1"
         >
           {(
             [
@@ -230,24 +151,23 @@ function Index() {
               ["list", "List Your Space"],
             ] as const
           ).map(([m, label]) => (
-            <button
+            <Button
               key={m}
               type="button"
               aria-pressed={mode === m}
               onClick={() => setMode(m)}
-              className={`rounded-full px-[22px] py-[9px] ${
-                mode === m ? "bg-white text-neutral-900" : "text-white"
-              }`}
+              variant="ghost"
+              className={`rounded-full px-[22px] py-[9px] hover:bg-photo-glass hover:text-photo-foreground ${mode === m ? "bg-photo-foreground text-photo-ink" : "text-photo-foreground"}`}
             >
               {label}
-            </button>
+            </Button>
           ))}
         </div>
 
         <form
           onSubmit={onSearch}
           role="search"
-          className="flex rounded-full bg-white p-1.5 shadow-[0_8px_30px_rgba(0,0,0,.3)]"
+          className="flex rounded-full bg-photo-foreground p-1.5 shadow-lg"
         >
           <input
             type="text"
@@ -259,14 +179,14 @@ function Index() {
                 : "Enter your property's suburb or address"
             }
             aria-label="Search accommodation"
-            className="min-w-0 flex-1 bg-transparent px-[18px] py-3 text-base text-neutral-900 outline-none"
+            className="min-w-0 flex-1 bg-transparent px-[18px] py-3 text-base text-photo-ink outline-none"
           />
-          <button
+          <Button
             type="submit"
-            className="rounded-full bg-[#0a84ff] px-6 py-3 font-semibold text-white"
+            className="h-auto rounded-full bg-photo-action px-6 py-3 font-semibold text-photo-foreground hover:bg-photo-action/90"
           >
             Search
-          </button>
+          </Button>
         </form>
 
         <div className="my-[18px] flex flex-wrap justify-center gap-2.5">
@@ -280,14 +200,13 @@ function Index() {
               setProvince(e.target.value);
               setUniversity("");
             }}
-            className="max-w-full cursor-pointer rounded-full border px-4 py-2.5 text-sm text-white"
-            style={{ background: glass, borderColor: line }}
+            className="max-w-full cursor-pointer rounded-full border border-photo-line bg-photo-glass px-4 py-2.5 text-sm text-photo-foreground"
           >
-            <option value="" className="text-neutral-900">
+            <option value="" className="text-photo-ink">
               All provinces
             </option>
             {Object.keys(DATA).map((p) => (
-              <option key={p} value={p} className="text-neutral-900">
+              <option key={p} value={p} className="text-photo-ink">
                 {p}
               </option>
             ))}
@@ -299,45 +218,20 @@ function Index() {
             id="university"
             value={university}
             onChange={(e) => setUniversity(e.target.value)}
-            className="max-w-full cursor-pointer rounded-full border px-4 py-2.5 text-sm text-white"
-            style={{ background: glass, borderColor: line }}
+            className="max-w-full cursor-pointer rounded-full border border-photo-line bg-photo-glass px-4 py-2.5 text-sm text-photo-foreground"
           >
-            <option value="" className="text-neutral-900">
+            <option value="" className="text-photo-ink">
               All universities and colleges
             </option>
             {universities.map((u) => (
-              <option key={u} value={u} className="text-neutral-900">
+              <option key={u} value={u} className="text-photo-ink">
                 {u}
               </option>
             ))}
-            <option value={OTHER} className="text-neutral-900">
+            <option value={OTHER} className="text-photo-ink">
               {OTHER}
             </option>
           </select>
-        </div>
-
-        <div
-          role="group"
-          aria-label="Accommodation options"
-          className="mb-[18px] flex flex-wrap justify-center gap-2.5"
-        >
-          {CHIPS.map((c) => (
-            <button
-              key={c.key}
-              type="button"
-              aria-pressed={!!pressed[c.key]}
-              onClick={() =>
-                setPressed((p) => ({ ...p, [c.key]: !p[c.key] }))
-              }
-              className="rounded-full border px-[18px] py-[9px] text-sm text-white"
-              style={{
-                background: pressed[c.key] ? "#0a84ff" : glass,
-                borderColor: pressed[c.key] ? "#0a84ff" : line,
-              }}
-            >
-              {c.label}
-            </button>
-          ))}
         </div>
 
         <p
@@ -349,12 +243,12 @@ function Index() {
 
         <section
           aria-labelledby="calcTitle"
-          className="mx-auto w-[min(340px,100%)] rounded-[20px] border p-[22px] text-left backdrop-blur-[14px]"
-          style={{ background: "rgba(0,0,0,.4)", borderColor: line }}
+          className="mx-auto w-[min(340px,100%)] rounded-lg border border-photo-line bg-photo-panel p-[22px] text-left backdrop-blur-[14px]"
         >
           <h2 id="calcTitle" className="mb-3.5 text-lg font-semibold">
             Rent Calculator
           </h2>
+          <form onSubmit={calculateRent} noValidate>
           <label
             htmlFor="rent"
             className="mb-1 block text-xs opacity-75"
@@ -369,8 +263,8 @@ function Index() {
             inputMode="decimal"
             placeholder="e.g. 4500"
             value={rent}
-            onChange={(e) => setRent(e.target.value)}
-            className="mb-3 w-full rounded-[10px] p-[11px] text-[15px] text-neutral-900"
+            onChange={(e) => { setRent(e.target.value); setCalculation(null); setCalculationError(""); }}
+            className="mb-3 w-full rounded-md bg-photo-foreground p-[11px] text-[15px] text-photo-ink"
           />
           <label
             htmlFor="months"
@@ -382,28 +276,24 @@ function Index() {
             id="months"
             type="number"
             min={1}
-            max={60}
             step={1}
             inputMode="numeric"
             placeholder="e.g. 10"
             value={months}
-            onChange={(e) => setMonths(e.target.value)}
-            className="mb-3 w-full rounded-[10px] p-[11px] text-[15px] text-neutral-900"
+            onChange={(e) => { setMonths(e.target.value); setCalculation(null); setCalculationError(""); }}
+            className="mb-3 w-full rounded-md bg-photo-foreground p-[11px] text-[15px] text-photo-ink"
           />
-          <div className="text-[26px] font-bold tracking-[-0.5px]">
-            {zar.format(total)}
+          <Button type="submit" className="w-full bg-photo-action text-photo-foreground hover:bg-photo-action/90">Calculate Total Rent</Button>
+          <div aria-live="polite" className="mt-3 min-h-5 text-sm">
+            {calculationError || (calculation ? `Total: ${zar.format(calculation.total)}` : "")}
           </div>
-          <div aria-live="polite" className="min-h-[18px] text-[13px] opacity-75">
-            {note}
-          </div>
+          {calculation && <p className="text-xs opacity-75">{zar.format(calculation.rent)} × {calculation.months} month{calculation.months === 1 ? "" : "s"}</p>}
+          </form>
         </section>
       </main>
 
-      <div className="fixed bottom-3.5 left-[5vw] text-xs opacity-70 max-sm:hidden">
-        {loadedSlides[slideIdx]?.label ?? ""}
-      </div>
       <footer className="p-3.5 text-center text-xs opacity-60">
-        © {new Date().getFullYear()} ResRes South Africa
+        © {new Date().getFullYear()} residence24 South Africa
       </footer>
     </div>
   );

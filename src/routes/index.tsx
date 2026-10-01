@@ -30,6 +30,13 @@ export const Route = createFileRoute("/")({
 });
 
 
+type FilterKey = "lgbtq" | "pet" | "accessible";
+const FILTERS: { id: FilterKey; icon: string; label: string }[] = [
+  { id: "lgbtq", icon: "🏳️‍🌈", label: "LGBTQ+ Friendly" },
+  { id: "pet", icon: "🐾", label: "Pet Friendly" },
+  { id: "accessible", icon: "♿", label: "Special Needs Accessible" },
+];
+
 const zar = new Intl.NumberFormat("en-ZA", {
   style: "currency",
   currency: "ZAR",

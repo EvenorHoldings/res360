@@ -78,11 +78,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "ResRes | Student Accommodation in South Africa" },
+      {
+        name: "description",
+        content:
+          "ResRes: find safe, affordable, inclusive student accommodation across South Africa.",
+      },
+      { name: "author", content: "ResRes" },
+      {
+        property: "og:title",
+        content: "ResRes | Student Accommodation in South Africa",
+      },
+      {
+        property: "og:description",
+        content:
+          "Find your perfect student residence — safe, affordable, inclusive accommodation across South Africa.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },

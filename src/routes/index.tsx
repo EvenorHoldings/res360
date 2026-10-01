@@ -175,8 +175,8 @@ function Index() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder={
               mode === "find"
-                ? "Search by suburb, city or campus"
-                : "Enter your property's suburb or address"
+                ? "Search locations"
+                : "Property location"
             }
             aria-label="Search accommodation"
             className="min-w-0 flex-1 bg-transparent px-[18px] py-3 text-base text-photo-ink outline-none"

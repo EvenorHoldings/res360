@@ -137,7 +137,7 @@ function Index() {
   }, []);
 
   const universities = useMemo(
-    () => (province ? DATA[province] : Object.values(DATA).flat()),
+    () => (province ? (DATA[province] ?? []) : Object.values(DATA).flat()),
     [province],
   );
 

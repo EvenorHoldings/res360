@@ -2,24 +2,25 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import capeTownAerial from "@/assets/cape-town-aerial.jpg";
+import { INSTITUTIONS, OTHER_COLLEGE } from "@/data/institutions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "residence24 | Student Accommodation in South Africa" },
+      { title: "Residence24 | Student Accommodation in South Africa" },
       {
         name: "description",
         content:
-          "residence24: find student accommodation across South Africa and calculate your total rent.",
+          "Find safe, affordable, inclusive student accommodation across all nine South African provinces.",
       },
       {
         property: "og:title",
-        content: "residence24 | Student Accommodation in South Africa",
+        content: "Residence24 | Student Accommodation in South Africa",
       },
       {
         property: "og:description",
         content:
-          "Find student accommodation across South Africa and calculate your total rent with residence24.",
+          "LGBTQ+ friendly, pet friendly and accessible student housing near every university.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

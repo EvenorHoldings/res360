@@ -59,9 +59,23 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-photo-foreground: var(--photo-foreground);
+  --color-photo-ink: var(--photo-ink);
+  --color-photo-glass: var(--photo-glass);
+  --color-photo-line: var(--photo-line);
+  --color-photo-panel: var(--photo-panel);
+  --color-photo-scrim: var(--photo-scrim);
+  --color-photo-action: var(--photo-action);
 }
 
 :root {
+  --photo-foreground: oklch(1 0 0);
+  --photo-ink: oklch(0.22 0.02 250);
+  --photo-glass: oklch(1 0 0 / 14%);
+  --photo-line: oklch(1 0 0 / 30%);
+  --photo-panel: oklch(0.12 0.01 250 / 72%);
+  --photo-scrim: oklch(0.1 0.01 250 / 38%);
+  --photo-action: oklch(0.59 0.17 245);
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);

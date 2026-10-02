@@ -53,8 +53,12 @@ function Index() {
   const [calculation, setCalculation] = useState<{ total: number; rent: number; months: number } | null>(null);
   const [calculationError, setCalculationError] = useState("");
 
+  const [filters, setFilters] = useState<FilterKey[]>([]);
+  const toggleFilter = (id: FilterKey) =>
+    setFilters((f) => (f.includes(id) ? f.filter((x) => x !== id) : [...f, id]));
+
   const universities = useMemo(
-    () => (province ? (DATA[province] ?? []) : Object.values(DATA).flat()),
+    () => (province ? (INSTITUTIONS[province] ?? []) : Object.values(INSTITUTIONS).flat()),
     [province],
   );
 
@@ -77,6 +81,7 @@ function Index() {
     if (query.trim()) parts.push(query.trim());
     if (province) parts.push(province);
     if (university) parts.push(university);
+    FILTERS.filter((f) => filters.includes(f.id)).forEach((f) => parts.push(f.label));
     setSummary(parts.join("  ·  "));
   };
 
@@ -175,7 +180,7 @@ function Index() {
             <option value="" className="text-photo-ink">
               All provinces
             </option>
-            {Object.keys(DATA).map((p) => (
+            {Object.keys(INSTITUTIONS).map((p) => (
               <option key={p} value={p} className="text-photo-ink">
                 {p}
               </option>
@@ -198,10 +203,27 @@ function Index() {
                 {u}
               </option>
             ))}
-            <option value={OTHER} className="text-photo-ink">
-              {OTHER}
+            <option value={OTHER_COLLEGE} className="text-photo-ink">
+              {OTHER_COLLEGE}
             </option>
           </select>
+        </div>
+
+        <div className="mb-[18px] flex flex-wrap justify-center gap-2.5">
+          {FILTERS.map((f) => {
+            const on = filters.includes(f.id);
+            return (
+              <button
+                key={f.id}
+                type="button"
+                aria-pressed={on}
+                onClick={() => toggleFilter(f.id)}
+                className={`rounded-full border border-photo-line px-4 py-2 text-sm ${on ? "bg-photo-foreground text-photo-ink" : "bg-photo-glass text-photo-foreground"}`}
+              >
+                <span aria-hidden="true">{f.icon}</span> {f.label}
+              </button>
+            );
+          })}
         </div>
 
         <p

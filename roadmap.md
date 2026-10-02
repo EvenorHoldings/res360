@@ -1,0 +1,4 @@
+- [x] Set up approved-only accommodation listings and email sign-in.
+- [x] Add shared navigation, information pages, branded images and rotating background.
+- [ ] Wire search, submissions, and login; verify in preview.
+- [ ] Badge removal blocked by Pro plan/editor-role requirement.

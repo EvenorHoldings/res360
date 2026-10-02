@@ -78,25 +78,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "residence24 | Student Accommodation in South Africa" },
-      {
-        name: "description",
-        content:
-          "residence24: find student accommodation across South Africa and calculate your total rent.",
-      },
-      { name: "author", content: "residence24" },
-      {
-        property: "og:title",
-        content: "residence24 | Student Accommodation in South Africa",
-      },
-      {
-        property: "og:description",
-        content:
-          "Find your perfect student residence — safe, affordable, inclusive accommodation across South Africa.",
-      },
+      { property: "og:site_name", content: "Residence24" },
+      { name: "author", content: "Residence24" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -114,7 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-ZA">
       <head>
         <HeadContent />
       </head>

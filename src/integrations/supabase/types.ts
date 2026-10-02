@@ -14,7 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      listings: {
+        Row: {
+          accessible: boolean
+          created_at: string
+          description: string
+          id: string
+          institution: string | null
+          lgbtq_friendly: boolean
+          location: string
+          monthly_rent: number
+          owner_id: string
+          pet_friendly: boolean
+          province: string
+          status: string
+          title: string
+        }
+        Insert: {
+          accessible?: boolean
+          created_at?: string
+          description: string
+          id?: string
+          institution?: string | null
+          lgbtq_friendly?: boolean
+          location: string
+          monthly_rent: number
+          owner_id?: string
+          pet_friendly?: boolean
+          province: string
+          status?: string
+          title: string
+        }
+        Update: {
+          accessible?: boolean
+          created_at?: string
+          description?: string
+          id?: string
+          institution?: string | null
+          lgbtq_friendly?: boolean
+          location?: string
+          monthly_rent?: number
+          owner_id?: string
+          pet_friendly?: boolean
+          province?: string
+          status?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

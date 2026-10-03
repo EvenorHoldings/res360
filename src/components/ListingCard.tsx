@@ -1,0 +1,11 @@
+import { Link } from '@tanstack/react-router';
+import { MapPin, Heart } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { zar, type Listing } from '@/lib/listings';
+export function ListingCard({listing}: {listing:Listing}) {
+ const [saved,setSaved]=useState(false); const [message,setMessage]=useState('');
+ async function save(){const {data:{user}}=await supabase.auth.getUser();if(!user){setMessage('Sign in to save residences.');return;}const {error}=saved?await supabase.from('saved_listings').delete().eq('listing_id',listing.id).eq('user_id',user.id):await supabase.from('saved_listings').insert({listing_id:listing.id,user_id:user.id});if(error)setMessage('Could not update saved residences.');else {setSaved(!saved);setMessage(saved?'Removed from saved':'Saved');}}
+ return <article className="flex flex-col rounded-lg border border-photo-line bg-photo-panel p-5 text-left backdrop-blur-[14px]"><div className="flex items-start justify-between gap-4"><div><h3 className="text-lg font-semibold"><Link to="/listing/$id" params={{id:listing.id}} className="hover:underline">{listing.title}</Link></h3><p className="mt-1 flex items-center gap-1 text-sm"><MapPin size={14} aria-hidden="true"/> {listing.location}, {listing.province}</p></div><Button size="icon" variant="ghost" aria-label={saved?'Remove saved residence':'Save residence'} aria-pressed={saved} onClick={save} className="text-photo-foreground"><Heart fill={saved?'currentColor':'none'}/></Button></div><p className="mt-3 font-semibold tabular-nums">{zar.format(listing.monthly_rent)} <span className="text-sm font-normal">/ month</span></p><p className="mt-2 line-clamp-2 text-sm text-photo-foreground/90">{listing.description}</p><div className="mt-3 flex flex-wrap gap-2 text-xs">{listing.institution&&<span className="rounded border border-photo-line px-2 py-1">{listing.institution}</span>}{listing.nsfas_accredited&&<span className="rounded border border-photo-line px-2 py-1">NSFAS</span>}{listing.pet_friendly&&<span className="rounded border border-photo-line px-2 py-1">Pet friendly</span>}{listing.accessible&&<span className="rounded border border-photo-line px-2 py-1">Accessible</span>}</div><p className="mt-2 text-xs" role="status">{message}</p></article>;
+}

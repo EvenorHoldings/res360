@@ -14,63 +14,454 @@ export type Database = {
   }
   public: {
     Tables: {
+      amenities: {
+        Row: {
+          icon: string | null
+          id: string
+          label: string
+          slug: string
+        }
+        Insert: {
+          icon?: string | null
+          id?: string
+          label: string
+          slug: string
+        }
+        Update: {
+          icon?: string | null
+          id?: string
+          label?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      enquiries: {
+        Row: {
+          created_at: string
+          id: string
+          listing_id: string
+          message: string
+          preferred_move_in: string | null
+          status: string
+          student_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          listing_id: string
+          message: string
+          preferred_move_in?: string | null
+          status?: string
+          student_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          listing_id?: string
+          message?: string
+          preferred_move_in?: string | null
+          status?: string
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enquiries_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutions: {
+        Row: {
+          id: string
+          name: string
+          province: string | null
+          sort_order: number
+        }
+        Insert: {
+          id?: string
+          name: string
+          province?: string | null
+          sort_order?: number
+        }
+        Update: {
+          id?: string
+          name?: string
+          province?: string | null
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      landlords: {
+        Row: {
+          business_name: string
+          contact_email: string | null
+          created_at: string
+          id: string
+          phone: string | null
+          user_id: string
+          verification: string
+          whatsapp: string | null
+        }
+        Insert: {
+          business_name: string
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          phone?: string | null
+          user_id: string
+          verification?: string
+          whatsapp?: string | null
+        }
+        Update: {
+          business_name?: string
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          phone?: string | null
+          user_id?: string
+          verification?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      listing_amenities: {
+        Row: {
+          amenity_id: string
+          listing_id: string
+        }
+        Insert: {
+          amenity_id: string
+          listing_id: string
+        }
+        Update: {
+          amenity_id?: string
+          listing_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_amenities_amenity_id_fkey"
+            columns: ["amenity_id"]
+            isOneToOne: false
+            referencedRelation: "amenities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listing_amenities_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_images: {
+        Row: {
+          alt_text: string
+          id: string
+          listing_id: string
+          sort_order: number
+          storage_path: string
+        }
+        Insert: {
+          alt_text?: string
+          id?: string
+          listing_id: string
+          sort_order?: number
+          storage_path: string
+        }
+        Update: {
+          alt_text?: string
+          id?: string
+          listing_id?: string
+          sort_order?: number
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_images_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       listings: {
         Row: {
           accessible: boolean
+          available_from: string | null
+          city: string | null
           created_at: string
+          deposit_zar: number | null
           description: string
+          distance_km: number | null
           id: string
           institution: string | null
+          landlord_id: string | null
           lgbtq_friendly: boolean
           location: string
           monthly_rent: number
+          nsfas_accredited: boolean
           owner_id: string
           pet_friendly: boolean
           province: string
+          published_at: string | null
+          room_type: Database["public"]["Enums"]["room_type"] | null
           status: string
           title: string
         }
         Insert: {
           accessible?: boolean
+          available_from?: string | null
+          city?: string | null
           created_at?: string
+          deposit_zar?: number | null
           description: string
+          distance_km?: number | null
           id?: string
           institution?: string | null
+          landlord_id?: string | null
           lgbtq_friendly?: boolean
           location: string
           monthly_rent: number
+          nsfas_accredited?: boolean
           owner_id?: string
           pet_friendly?: boolean
           province: string
+          published_at?: string | null
+          room_type?: Database["public"]["Enums"]["room_type"] | null
           status?: string
           title: string
         }
         Update: {
           accessible?: boolean
+          available_from?: string | null
+          city?: string | null
           created_at?: string
+          deposit_zar?: number | null
           description?: string
+          distance_km?: number | null
           id?: string
           institution?: string | null
+          landlord_id?: string | null
           lgbtq_friendly?: boolean
           location?: string
           monthly_rent?: number
+          nsfas_accredited?: boolean
           owner_id?: string
           pet_friendly?: boolean
           province?: string
+          published_at?: string | null
+          room_type?: Database["public"]["Enums"]["room_type"] | null
           status?: string
           title?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "listings_landlord_id_fkey"
+            columns: ["landlord_id"]
+            isOneToOne: false
+            referencedRelation: "landlords"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notify_requests: {
+        Row: {
+          consent_popia: boolean
+          created_at: string
+          email: string
+          id: string
+          max_rent_zar: number | null
+          province: string | null
+        }
+        Insert: {
+          consent_popia?: boolean
+          created_at?: string
+          email: string
+          id?: string
+          max_rent_zar?: number | null
+          province?: string | null
+        }
+        Update: {
+          consent_popia?: boolean
+          created_at?: string
+          email?: string
+          id?: string
+          max_rent_zar?: number | null
+          province?: string | null
+        }
         Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      saved_listings: {
+        Row: {
+          created_at: string
+          listing_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          listing_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          listing_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_listings_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      verification_documents: {
+        Row: {
+          created_at: string
+          doc_type: string
+          id: string
+          landlord_id: string
+          storage_path: string
+        }
+        Insert: {
+          created_at?: string
+          doc_type: string
+          id?: string
+          landlord_id: string
+          storage_path: string
+        }
+        Update: {
+          created_at?: string
+          doc_type?: string
+          id?: string
+          landlord_id?: string
+          storage_path?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "verification_documents_landlord_id_fkey"
+            columns: ["landlord_id"]
+            isOneToOne: false
+            referencedRelation: "landlords"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      become_landlord: { Args: { _business_name: string }; Returns: string }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      search_listings: {
+        Args: {
+          _accessible?: boolean
+          _institution?: string
+          _lgbtq?: boolean
+          _limit?: number
+          _max_distance?: number
+          _max_rent?: number
+          _move_in?: string
+          _nsfas?: boolean
+          _offset?: number
+          _pet?: boolean
+          _province?: string
+          _room_type?: Database["public"]["Enums"]["room_type"]
+          _sort?: string
+        }
+        Returns: {
+          accessible: boolean
+          available_from: string | null
+          city: string | null
+          created_at: string
+          deposit_zar: number | null
+          description: string
+          distance_km: number | null
+          id: string
+          institution: string | null
+          landlord_id: string | null
+          lgbtq_friendly: boolean
+          location: string
+          monthly_rent: number
+          nsfas_accredited: boolean
+          owner_id: string
+          pet_friendly: boolean
+          province: string
+          published_at: string | null
+          room_type: Database["public"]["Enums"]["room_type"] | null
+          status: string
+          title: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "listings"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "landlord" | "admin"
+      room_type: "single" | "sharing" | "studio" | "bachelor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -197,6 +588,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "landlord", "admin"],
+      room_type: ["single", "sharing", "studio", "bachelor"],
+    },
   },
 } as const

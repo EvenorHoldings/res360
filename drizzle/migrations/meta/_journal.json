@@ -8,6 +8,13 @@
       "when": 1790920038568,
       "tag": "0000_create_approved_student_listings",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791007272090,
+      "tag": "0001_expand_residence24_listings_and_member_features",
+      "breakpoints": true
     }
   ]
 }

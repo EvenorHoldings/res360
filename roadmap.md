@@ -1,4 +1,4 @@
-- [x] Set up approved-only accommodation listings and email sign-in.
-- [x] Add shared navigation, information pages, branded images and rotating background.
-- [ ] Wire search, submissions, and login; verify in preview.
-- [ ] Badge removal blocked by Pro plan/editor-role requirement.
+- [x] Preserve the existing listings and add secure member, search and enquiry data structures.
+- [x] Improve shared navigation, design tokens and slideshow.
+- [ ] Complete search, listing, saved, contact, and landlord pages; verify preview.
+- [ ] Badge removal blocked by account plan/editor permissions.

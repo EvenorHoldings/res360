@@ -1,0 +1,14 @@
+CREATE FUNCTION public.guard_landlord_changes() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF NOT public.has_role(auth.uid(),'admin') THEN NEW.verification=OLD.verification; NEW.user_id=OLD.user_id; END IF; RETURN NEW; END $$;
+CREATE TRIGGER guard_landlord BEFORE UPDATE ON public.landlords FOR EACH ROW EXECUTE FUNCTION public.guard_landlord_changes();
+CREATE FUNCTION public.guard_listing_changes() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF TG_OP='INSERT' THEN NEW.status='pending'; NEW.owner_id=auth.uid(); RETURN NEW; END IF; IF NOT public.has_role(auth.uid(),'admin') THEN NEW.status=OLD.status; NEW.owner_id=OLD.owner_id; NEW.published_at=OLD.published_at; END IF; RETURN NEW; END $$;
+CREATE TRIGGER guard_listing BEFORE INSERT OR UPDATE ON public.listings FOR EACH ROW EXECUTE FUNCTION public.guard_listing_changes();
+CREATE POLICY "Admin read roles" ON public.user_roles FOR SELECT TO authenticated USING(public.has_role((SELECT auth.uid()),'admin'));
+CREATE POLICY "Admin read notifications" ON public.notify_requests FOR SELECT TO authenticated USING(public.has_role((SELECT auth.uid()),'admin'));
+GRANT SELECT ON public.notify_requests TO authenticated;
+CREATE POLICY "Admin read landlords" ON public.landlords FOR SELECT TO authenticated USING(public.has_role((SELECT auth.uid()),'admin'));
+CREATE POLICY "Admin read listings" ON public.listings FOR SELECT TO authenticated USING(public.has_role((SELECT auth.uid()),'admin'));
+GRANT UPDATE ON public.listings TO authenticated;
+CREATE POLICY "Owner edit listing" ON public.listings FOR UPDATE TO authenticated USING(owner_id=(SELECT auth.uid()) OR public.has_role((SELECT auth.uid()),'admin')) WITH CHECK(owner_id=(SELECT auth.uid()) OR public.has_role((SELECT auth.uid()),'admin'));
+CREATE POLICY "Admin edit landlord" ON public.landlords FOR UPDATE TO authenticated USING(public.has_role((SELECT auth.uid()),'admin')) WITH CHECK(public.has_role((SELECT auth.uid()),'admin'));
+CREATE POLICY "Admin edit notifications" ON public.notify_requests FOR DELETE TO authenticated USING(public.has_role((SELECT auth.uid()),'admin'));
+GRANT DELETE ON public.notify_requests TO authenticated;

@@ -15,6 +15,13 @@
       "when": 1791007272090,
       "tag": "0001_expand_residence24_listings_and_member_features",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791007309208,
+      "tag": "0002_protect_landlord_verification_and_listing_status",
+      "breakpoints": true
     }
   ]
 }

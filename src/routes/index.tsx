@@ -7,7 +7,7 @@ import { INSTITUTIONS, OTHER_COLLEGE } from '@/data/institutions';
 import { pageHead } from '@/lib/page-head';
 import { supabase } from '@/integrations/supabase/client';
 
-export const Route = createFileRoute('/')({ head: () => pageHead('Residence24 | Student Accommodation in South Africa', 'Find safe, affordable, inclusive student accommodation across all nine South African provinces.', '/'), component: Index });
+export const Route = createFileRoute('/')({ head: () => pageHead('Res360 | Student Accommodation in South Africa', 'Find safe, affordable, inclusive student accommodation across all nine South African provinces.', '/'), component: Index });
 type FilterKey = 'lgbtq' | 'pet' | 'accessible';
 const FILTERS: {id:FilterKey;icon:string;label:string;column:'lgbtq_friendly'|'pet_friendly'|'accessible'}[] = [
  {id:'lgbtq',icon:'🏳️‍🌈',label:'LGBTQ+ Friendly',column:'lgbtq_friendly'},

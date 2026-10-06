@@ -5,7 +5,7 @@ import { PageBody } from '@/components/SiteFrame';
 import { pageHead } from '@/lib/page-head';
 import { supabase } from '@/integrations/supabase/client';
 
-export const Route = createFileRoute('/login')({ head: () => pageHead('Login | Residence24', 'Sign in or create your Residence24 account.', '/login'), component: Login });
+export const Route = createFileRoute('/login')({ head: () => pageHead('Login | Res360', 'Sign in or create your Res360 account.', '/login'), component: Login });
 function Login() {
  const [email,setEmail]=useState(''); const [password,setPassword]=useState(''); const [register,setRegister]=useState(false); const [message,setMessage]=useState(''); const [busy,setBusy]=useState(false); const [signedIn,setSignedIn]=useState(false);
  useEffect(() => { supabase.auth.getUser().then(({data}) => setSignedIn(Boolean(data.user))); const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,session)=>setSignedIn(Boolean(session?.user))); return () => subscription.unsubscribe(); },[]);

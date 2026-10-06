@@ -6,16 +6,16 @@ export type SearchFilters = { query?: string; province?: string; institution?: s
 
 export async function searchListings(filters: SearchFilters) {
   const args: Record<string, string | number | boolean> = { _sort: filters.sort || 'newest' };
-  if (filters.province) args._province = filters.province;
-  if (filters.institution) args._institution = filters.institution;
-  if (filters.maxRent) args._max_rent = filters.maxRent;
-  if (filters.roomType) args._room_type = filters.roomType;
-  if (filters.moveIn) args._move_in = filters.moveIn;
-  if (filters.maxDistance) args._max_distance = filters.maxDistance;
-  if (filters.nsfas) args._nsfas = true;
-  if (filters.lgbtq) args._lgbtq = true;
-  if (filters.pet) args._pet = true;
-  if (filters.accessible) args._accessible = true;
+  if (filters.province) args["_province"] = filters.province;
+  if (filters.institution) args["_institution"] = filters.institution;
+  if (filters.maxRent) args["_max_rent"] = filters.maxRent;
+  if (filters.roomType) args["_room_type"] = filters.roomType;
+  if (filters.moveIn) args["_move_in"] = filters.moveIn;
+  if (filters.maxDistance) args["_max_distance"] = filters.maxDistance;
+  if (filters.nsfas) args["_nsfas"] = true;
+  if (filters.lgbtq) args["_lgbtq"] = true;
+  if (filters.pet) args["_pet"] = true;
+  if (filters.accessible) args["_accessible"] = true;
   const { data, error } = await supabase.rpc('search_listings', args as never);
   if (error) throw error;
   const rows = (data ?? []) as Listing[];

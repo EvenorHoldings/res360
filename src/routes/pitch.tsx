@@ -25,7 +25,7 @@ function Pitch() {
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setBusy(true); setMsg('');
     const f = Object.fromEntries(new FormData(e.currentTarget)) as Record<string, string>;
-    try { await send({ data: { name: f.name ?? '', email: f.email ?? '', organisation: f.organisation || undefined, message: f.message || undefined, website: f.website || undefined } }); setMsg('Thank you. We will be in touch about the data room.'); e.currentTarget.reset(); }
+    try { await send({ data: { name: f['name'] ?? '', email: f['email'] ?? '', organisation: f['organisation'] || undefined, message: f['message'] || undefined, website: f['website'] || undefined } }); setMsg('Thank you. We will be in touch about the data room.'); e.currentTarget.reset(); }
     catch { setMsg('Please check your details and try again.'); }
     setBusy(false);
   }

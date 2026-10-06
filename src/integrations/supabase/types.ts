@@ -39,6 +39,7 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          is_demo: boolean
           listing_id: string
           message: string
           preferred_move_in: string | null
@@ -48,6 +49,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
+          is_demo?: boolean
           listing_id: string
           message: string
           preferred_move_in?: string | null
@@ -57,6 +59,7 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
+          is_demo?: boolean
           listing_id?: string
           message?: string
           preferred_move_in?: string | null
@@ -91,6 +94,33 @@ export type Database = {
           name?: string
           province?: string | null
           sort_order?: number
+        }
+        Relationships: []
+      }
+      investor_leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          organisation: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          organisation?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          organisation?: string | null
         }
         Relationships: []
       }
@@ -192,16 +222,22 @@ export type Database = {
       listings: {
         Row: {
           accessible: boolean
+          amenities: string[]
           available_from: string | null
+          beds: number
           city: string | null
           created_at: string
           deposit_zar: number | null
           description: string
           distance_km: number | null
           id: string
+          image_urls: string[]
           institution: string | null
+          is_demo: boolean
           landlord_id: string | null
+          lat: number | null
           lgbtq_friendly: boolean
+          lng: number | null
           location: string
           monthly_rent: number
           nsfas_accredited: boolean
@@ -211,20 +247,27 @@ export type Database = {
           published_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           status: string
+          suburb: string | null
           title: string
         }
         Insert: {
           accessible?: boolean
+          amenities?: string[]
           available_from?: string | null
+          beds?: number
           city?: string | null
           created_at?: string
           deposit_zar?: number | null
           description: string
           distance_km?: number | null
           id?: string
+          image_urls?: string[]
           institution?: string | null
+          is_demo?: boolean
           landlord_id?: string | null
+          lat?: number | null
           lgbtq_friendly?: boolean
+          lng?: number | null
           location: string
           monthly_rent: number
           nsfas_accredited?: boolean
@@ -234,20 +277,27 @@ export type Database = {
           published_at?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           status?: string
+          suburb?: string | null
           title: string
         }
         Update: {
           accessible?: boolean
+          amenities?: string[]
           available_from?: string | null
+          beds?: number
           city?: string | null
           created_at?: string
           deposit_zar?: number | null
           description?: string
           distance_km?: number | null
           id?: string
+          image_urls?: string[]
           institution?: string | null
+          is_demo?: boolean
           landlord_id?: string | null
+          lat?: number | null
           lgbtq_friendly?: boolean
+          lng?: number | null
           location?: string
           monthly_rent?: number
           nsfas_accredited?: boolean
@@ -257,6 +307,7 @@ export type Database = {
           published_at?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           status?: string
+          suburb?: string | null
           title?: string
         }
         Relationships: [
@@ -299,29 +350,76 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          budget_zar: number | null
           created_at: string
           full_name: string | null
           id: string
+          lifestyle: string | null
+          pets: boolean | null
           phone: string | null
+          student_verified: boolean
           updated_at: string
         }
         Insert: {
           avatar_url?: string | null
+          budget_zar?: number | null
           created_at?: string
           full_name?: string | null
           id: string
+          lifestyle?: string | null
+          pets?: boolean | null
           phone?: string | null
+          student_verified?: boolean
           updated_at?: string
         }
         Update: {
           avatar_url?: string | null
+          budget_zar?: number | null
           created_at?: string
           full_name?: string | null
           id?: string
+          lifestyle?: string | null
+          pets?: boolean | null
           phone?: string | null
+          student_verified?: boolean
           updated_at?: string
         }
         Relationships: []
+      }
+      reviews: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          listing_id: string
+          rating: number
+          reviewer_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          listing_id: string
+          rating: number
+          reviewer_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          listing_id?: string
+          rating?: number
+          reviewer_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       saved_listings: {
         Row: {
@@ -430,16 +528,22 @@ export type Database = {
         }
         Returns: {
           accessible: boolean
+          amenities: string[]
           available_from: string | null
+          beds: number
           city: string | null
           created_at: string
           deposit_zar: number | null
           description: string
           distance_km: number | null
           id: string
+          image_urls: string[]
           institution: string | null
+          is_demo: boolean
           landlord_id: string | null
+          lat: number | null
           lgbtq_friendly: boolean
+          lng: number | null
           location: string
           monthly_rent: number
           nsfas_accredited: boolean
@@ -449,6 +553,7 @@ export type Database = {
           published_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           status: string
+          suburb: string | null
           title: string
         }[]
         SetofOptions: {

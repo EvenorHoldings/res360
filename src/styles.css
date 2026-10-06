@@ -1,6 +1,10 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -70,28 +74,28 @@
 
 :root {
   --photo-foreground: oklch(1 0 0);
-  --photo-ink: oklch(0.22 0.02 250);
+  --photo-ink: oklch(0.21 0.04 265);
   --photo-glass: oklch(1 0 0 / 14%);
   --photo-line: oklch(1 0 0 / 30%);
-  --photo-panel: oklch(0.12 0.01 250 / 72%);
+  --photo-panel: oklch(0.25 0.06 240 / 78%);
   --photo-scrim: oklch(0.1 0.01 250 / 38%);
-  --photo-action: oklch(0.79 0.16 78);
-  --radius: 0.75rem;
-  --background: oklch(0.985 0.005 85);
-  --foreground: oklch(0.21 0.03 255);
+  --photo-action: oklch(0.69 0.12 182);
+  --radius: 0.875rem;
+  --background: oklch(0.98 0.003 250);
+  --foreground: oklch(0.21 0.04 265);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.38 0.12 175);
+  --primary: oklch(0.33 0.07 240);
   --primary-foreground: oklch(1 0 0);
   --secondary: oklch(0.968 0.007 247.896);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
+  --muted-foreground: oklch(0.55 0.04 257);
   --accent: oklch(0.968 0.007 247.896);
   --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: oklch(0.58 0.22 27);
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
@@ -157,4 +161,4 @@
   }
 }
 
-@layer base { body { font-family: "Inter", system-ui, sans-serif; line-height: 1.6; } h1,h2,h3 { font-family: "Plus Jakarta Sans", system-ui, sans-serif; } :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; } }
+@layer base { body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-size: 16px; line-height: 1.6; } h1,h2,h3,h4 { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-weight: 700; letter-spacing: -0.02em; } :focus-visible { outline: 2px solid var(--photo-action); outline-offset: 2px; } }

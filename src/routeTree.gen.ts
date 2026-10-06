@@ -12,10 +12,19 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as HelpRouteImport } from './routes/help'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ListRouteImport } from './routes/list'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PitchRouteImport } from './routes/pitch'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SavedRouteImport } from './routes/saved'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ListingIdRouteImport } from './routes/listing.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -32,9 +41,24 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HelpRoute = HelpRouteImport.update({
   id: '/help',
   path: '/help',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListRoute = ListRouteImport.update({
+  id: '/list',
+  path: '/list',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -42,9 +66,34 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PitchRoute = PitchRouteImport.update({
+  id: '/pitch',
+  path: '/pitch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -52,59 +101,141 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ListingIdRoute = ListingIdRouteImport.update({
+  id: '/listing/$id',
+  path: '/listing/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/list': typeof ListRoute
   '/login': typeof LoginRoute
+  '/pitch': typeof PitchRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/list': typeof ListRoute
   '/login': typeof LoginRoute
+  '/pitch': typeof PitchRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/help': typeof HelpRoute
+  '/how-it-works': typeof HowItWorksRoute
+  '/list': typeof ListRoute
   '/login': typeof LoginRoute
+  '/pitch': typeof PitchRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$' | '/about' | '/help' | '/login' | '/privacy' | '/terms'
+  fullPaths:
+    | '/'
+    | '/$'
+    | '/about'
+    | '/contact'
+    | '/help'
+    | '/how-it-works'
+    | '/list'
+    | '/login'
+    | '/pitch'
+    | '/pricing'
+    | '/privacy'
+    | '/saved'
+    | '/search'
+    | '/signup'
+    | '/terms'
+    | '/listing/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$' | '/about' | '/help' | '/login' | '/privacy' | '/terms'
+  to:
+    | '/'
+    | '/$'
+    | '/about'
+    | '/contact'
+    | '/help'
+    | '/how-it-works'
+    | '/list'
+    | '/login'
+    | '/pitch'
+    | '/pricing'
+    | '/privacy'
+    | '/saved'
+    | '/search'
+    | '/signup'
+    | '/terms'
+    | '/listing/$id'
   id:
     | '__root__'
     | '/'
     | '/$'
     | '/about'
+    | '/contact'
     | '/help'
+    | '/how-it-works'
+    | '/list'
     | '/login'
+    | '/pitch'
+    | '/pricing'
     | '/privacy'
+    | '/saved'
+    | '/search'
+    | '/signup'
     | '/terms'
+    | '/listing/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SplatRoute: typeof SplatRoute
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   HelpRoute: typeof HelpRoute
+  HowItWorksRoute: typeof HowItWorksRoute
+  ListRoute: typeof ListRoute
   LoginRoute: typeof LoginRoute
+  PitchRoute: typeof PitchRoute
+  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  SavedRoute: typeof SavedRoute
+  SearchRoute: typeof SearchRoute
+  SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
+  ListingIdRoute: typeof ListingIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -130,11 +261,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/help': {
       id: '/help'
       path: '/help'
       fullPath: '/help'
       preLoaderRoute: typeof HelpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list': {
+      id: '/list'
+      path: '/list'
+      fullPath: '/list'
+      preLoaderRoute: typeof ListRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -144,11 +296,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pitch': {
+      id: '/pitch'
+      path: '/pitch'
+      fullPath: '/pitch'
+      preLoaderRoute: typeof PitchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -158,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/listing/$id': {
+      id: '/listing/$id'
+      path: '/listing/$id'
+      fullPath: '/listing/$id'
+      preLoaderRoute: typeof ListingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -165,10 +359,19 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SplatRoute: SplatRoute,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   HelpRoute: HelpRoute,
+  HowItWorksRoute: HowItWorksRoute,
+  ListRoute: ListRoute,
   LoginRoute: LoginRoute,
+  PitchRoute: PitchRoute,
+  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  SavedRoute: SavedRoute,
+  SearchRoute: SearchRoute,
+  SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
+  ListingIdRoute: ListingIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

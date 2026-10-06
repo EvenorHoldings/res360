@@ -20,12 +20,10 @@ const listingSchema = z.object({ title:z.string().trim().min(5).max(120), locati
 type Listing = {id:string;title:string;location:string;province:string;institution:string|null;monthly_rent:number;description:string;lgbtq_friendly:boolean;pet_friendly:boolean;accessible:boolean};
 function Index(){
  const [mode,setMode]=useState<'find'|'list'>('find'); const [query,setQuery]=useState(''); const [province,setProvince]=useState(''); const [university,setUniversity]=useState(''); const [filters,setFilters]=useState<FilterKey[]>([]);
- const [rent,setRent]=useState('');const [months,setMonths]=useState('');const [calculation,setCalculation]=useState<{total:number;rent:number;months:number}|null>(null); const [calculationError,setCalculationError]=useState('');
  const [results,setResults]=useState<Listing[]>([]); const [searched,setSearched]=useState(false);const [searchError,setSearchError]=useState('');const [searching,setSearching]=useState(false);
  const [listingMessage,setListingMessage]=useState('');const [submitting,setSubmitting]=useState(false);
  const universities=useMemo(()=>province ? INSTITUTIONS[province] ?? [] : Object.values(INSTITUTIONS).flat(),[province]);
  const toggleFilter=(id:FilterKey)=>setFilters(f=>f.includes(id)?f.filter(x=>x!==id):[...f,id]);
- function calculateRent(e:FormEvent<HTMLFormElement>){e.preventDefault();const r=Number(rent),m=Number(months);if(rent.trim()===''||months.trim()===''||!Number.isFinite(r)||r<0||!Number.isSafeInteger(m)||m<1||m>60){setCalculation(null);setCalculationError('Enter a valid monthly rent and a whole number of months (1–60).');return}setCalculation({total:r*m,rent:r,months:m});setCalculationError('')}
  async function onSearch(e:FormEvent){e.preventDefault();if(mode==='list')return;setSearching(true);setSearchError('');setSearched(false);
   let request=supabase.from('listings').select('id,title,location,province,institution,monthly_rent,description,lgbtq_friendly,pet_friendly,accessible').eq('status','approved');
   if(query.trim())request=request.or(`title.ilike.%${query.trim().replace(/[%(),.]/g,'')}%,location.ilike.%${query.trim().replace(/[%(),.]/g,'')}%`);

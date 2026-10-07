@@ -15,7 +15,7 @@ function jitter(id: string) {
 }
 
 export function toMapPoints(rows: Listing[]): MapPoint[] {
-  return rows.flatMap((l) => {
+  return rows.flatMap((l): MapPoint[] => {
     if (l.lat != null && l.lng != null) return [{ listing: l, lat: l.lat, lng: l.lng, approximate: false }];
     const c = PROVINCE_CENTRES[l.province];
     if (!c) return [];

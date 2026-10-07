@@ -45,7 +45,7 @@ function SearchPage() {
           </label></div>
         </div>
         {view === 'map' && !busy && <div className="mt-6"><ClientOnly fallback={<Skeleton className="h-[420px] rounded-[14px] bg-photo-glass" />}><Suspense fallback={<Skeleton className="h-[420px] rounded-[14px] bg-photo-glass" />}><ListingsMap points={points} /></Suspense></ClientOnly>{rows && points.some((p) => p.approximate) && <p className="mt-2 text-xs opacity-75">Some pins show the province centre because the host has not set an exact location.</p>}{!rows && <p className="mt-2 text-sm">Search to place residences on the map.</p>}</div>}
-        <div className={`mt-6 grid gap-4 ${view === 'map' ? 'sm:grid-cols-2 lg:grid-cols-3' : ''} sm:grid-cols-2 lg:grid-cols-3`}>
+        <div className={`mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3`}>
           {busy ? Array.from({ length: 6 }, (_, i) => <Skeleton key={i} className="h-44 rounded-[14px] bg-photo-glass" />) : rows?.map((l) => <ListingCard key={l.id} listing={l} />)}
         </div>
         {!busy && rows?.length === 0 && !error && <p className="mt-8 rounded-[14px] border border-photo-line bg-photo-panel p-6 text-center">No residences match yet. Try fewer filters or another province.</p>}

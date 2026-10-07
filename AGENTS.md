@@ -11,3 +11,5 @@
 
 - Use TanStack file routes and shared SiteFrame for public pages rather than React Router; this preserves the project's SSR router and consistent site navigation.
 - Public listings are read through RLS and submissions are owner-scoped pending rows; this keeps unapproved accommodation off public search.
+- AI listing recommendations run in a server function (src/lib/ai/*.server.ts) that reads only approved listings and validates returned ids; this keeps the AI key server-side and prevents invented listings.
+- Search map uses Leaflet + OpenStreetMap, lazy-loaded client-only, falling back to province centres when a listing lacks coordinates; Leaflet cannot run during server rendering.

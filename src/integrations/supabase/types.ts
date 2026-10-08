@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      alerts: {
+        Row: {
+          channel: string
+          created_at: string
+          dedupe_key: string | null
+          delivery_status: string
+          event_type: string
+          id: string
+          listing_id: string | null
+          payload: Json
+          read_at: string | null
+          recipient_user_id: string
+          sent_at: string | null
+          severity: string
+        }
+        Insert: {
+          channel?: string
+          created_at?: string
+          dedupe_key?: string | null
+          delivery_status?: string
+          event_type: string
+          id?: string
+          listing_id?: string | null
+          payload?: Json
+          read_at?: string | null
+          recipient_user_id: string
+          sent_at?: string | null
+          severity?: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          dedupe_key?: string | null
+          delivery_status?: string
+          event_type?: string
+          id?: string
+          listing_id?: string | null
+          payload?: Json
+          read_at?: string | null
+          recipient_user_id?: string
+          sent_at?: string | null
+          severity?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       amenities: {
         Row: {
           icon: string | null
@@ -34,6 +87,378 @@ export type Database = {
           slug?: string
         }
         Relationships: []
+      }
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          after_data: Json | null
+          before_data: Json | null
+          created_at: string
+          id: number
+          resource_id: string | null
+          resource_type: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          created_at?: string
+          id?: number
+          resource_id?: string | null
+          resource_type: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          created_at?: string
+          id?: number
+          resource_id?: string | null
+          resource_type?: string
+        }
+        Relationships: []
+      }
+      audit_responses: {
+        Row: {
+          audit_id: string
+          created_at: string
+          created_by: string
+          evidence_ids: string[]
+          id: string
+          notes: string | null
+          observed_at: string | null
+          result: string
+          review_status: string
+          severity: string | null
+          template_item_id: string
+        }
+        Insert: {
+          audit_id: string
+          created_at?: string
+          created_by?: string
+          evidence_ids?: string[]
+          id?: string
+          notes?: string | null
+          observed_at?: string | null
+          result: string
+          review_status?: string
+          severity?: string | null
+          template_item_id: string
+        }
+        Update: {
+          audit_id?: string
+          created_at?: string
+          created_by?: string
+          evidence_ids?: string[]
+          id?: string
+          notes?: string | null
+          observed_at?: string | null
+          result?: string
+          review_status?: string
+          severity?: string | null
+          template_item_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_responses_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audit_responses_template_item_id_fkey"
+            columns: ["template_item_id"]
+            isOneToOne: false
+            referencedRelation: "audit_template_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_template_items: {
+        Row: {
+          critical_gate: boolean
+          guidance: string | null
+          id: string
+          item_code: string
+          label: string
+          required_evidence_types: string[]
+          section: string
+          severity_if_failed: string
+          sort_order: number
+          template_id: string
+          weight: number
+        }
+        Insert: {
+          critical_gate?: boolean
+          guidance?: string | null
+          id?: string
+          item_code: string
+          label: string
+          required_evidence_types?: string[]
+          section: string
+          severity_if_failed?: string
+          sort_order?: number
+          template_id: string
+          weight?: number
+        }
+        Update: {
+          critical_gate?: boolean
+          guidance?: string | null
+          id?: string
+          item_code?: string
+          label?: string
+          required_evidence_types?: string[]
+          section?: string
+          severity_if_failed?: string
+          sort_order?: number
+          template_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_template_items_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "audit_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      audit_templates: {
+        Row: {
+          created_at: string
+          effective_from: string | null
+          effective_to: string | null
+          id: string
+          jurisdiction_scope: string | null
+          name: string
+          property_type: string | null
+          published_at: string | null
+          published_by: string | null
+          source_refs: string[]
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          jurisdiction_scope?: string | null
+          name: string
+          property_type?: string | null
+          published_at?: string | null
+          published_by?: string | null
+          source_refs?: string[]
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          effective_from?: string | null
+          effective_to?: string | null
+          id?: string
+          jurisdiction_scope?: string | null
+          name?: string
+          property_type?: string | null
+          published_at?: string | null
+          published_by?: string | null
+          source_refs?: string[]
+          version?: number
+        }
+        Relationships: []
+      }
+      audits: {
+        Row: {
+          audit_type: string
+          auditor_id: string | null
+          created_at: string
+          decision: string | null
+          decision_reason: string | null
+          device_captured_at: string | null
+          id: string
+          listing_id: string
+          location_accuracy_m: number | null
+          next_due_at: string | null
+          reviewer_id: string | null
+          scheduled_at: string | null
+          server_received_at: string | null
+          started_at: string | null
+          status: string
+          submitted_at: string | null
+          template_id: string
+          template_version: number
+          updated_at: string
+        }
+        Insert: {
+          audit_type: string
+          auditor_id?: string | null
+          created_at?: string
+          decision?: string | null
+          decision_reason?: string | null
+          device_captured_at?: string | null
+          id?: string
+          listing_id: string
+          location_accuracy_m?: number | null
+          next_due_at?: string | null
+          reviewer_id?: string | null
+          scheduled_at?: string | null
+          server_received_at?: string | null
+          started_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          template_id: string
+          template_version: number
+          updated_at?: string
+        }
+        Update: {
+          audit_type?: string
+          auditor_id?: string | null
+          created_at?: string
+          decision?: string | null
+          decision_reason?: string | null
+          device_captured_at?: string | null
+          id?: string
+          listing_id?: string
+          location_accuracy_m?: number | null
+          next_due_at?: string | null
+          reviewer_id?: string | null
+          scheduled_at?: string | null
+          server_received_at?: string | null
+          started_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          template_id?: string
+          template_version?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audits_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "audits_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "audit_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      consents: {
+        Row: {
+          granted_at: string
+          id: string
+          notice_version: string
+          purpose_code: string
+          user_id: string
+          withdrawn_at: string | null
+        }
+        Insert: {
+          granted_at?: string
+          id?: string
+          notice_version: string
+          purpose_code: string
+          user_id?: string
+          withdrawn_at?: string | null
+        }
+        Update: {
+          granted_at?: string
+          id?: string
+          notice_version?: string
+          purpose_code?: string
+          user_id?: string
+          withdrawn_at?: string | null
+        }
+        Relationships: []
+      }
+      corrective_actions: {
+        Row: {
+          audit_id: string | null
+          audit_response_id: string | null
+          closure_reviewer_id: string | null
+          created_at: string
+          due_at: string | null
+          id: string
+          listing_id: string
+          owner_user_id: string | null
+          provider_response: string | null
+          public_disclosure_level: string
+          reopen_count: number
+          severity: string
+          status: string
+          submitted_resolution_at: string | null
+          title: string
+          updated_at: string
+          verified_closed_at: string | null
+        }
+        Insert: {
+          audit_id?: string | null
+          audit_response_id?: string | null
+          closure_reviewer_id?: string | null
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          listing_id: string
+          owner_user_id?: string | null
+          provider_response?: string | null
+          public_disclosure_level?: string
+          reopen_count?: number
+          severity: string
+          status?: string
+          submitted_resolution_at?: string | null
+          title: string
+          updated_at?: string
+          verified_closed_at?: string | null
+        }
+        Update: {
+          audit_id?: string | null
+          audit_response_id?: string | null
+          closure_reviewer_id?: string | null
+          created_at?: string
+          due_at?: string | null
+          id?: string
+          listing_id?: string
+          owner_user_id?: string | null
+          provider_response?: string | null
+          public_disclosure_level?: string
+          reopen_count?: number
+          severity?: string
+          status?: string
+          submitted_resolution_at?: string | null
+          title?: string
+          updated_at?: string
+          verified_closed_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corrective_actions_audit_id_fkey"
+            columns: ["audit_id"]
+            isOneToOne: false
+            referencedRelation: "audits"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corrective_actions_audit_response_id_fkey"
+            columns: ["audit_response_id"]
+            isOneToOne: false
+            referencedRelation: "audit_responses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corrective_actions_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       enquiries: {
         Row: {
@@ -72,6 +497,84 @@ export type Database = {
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      evidence_documents: {
+        Row: {
+          access_class: string
+          created_at: string
+          document_type: string
+          expires_at: string | null
+          id: string
+          issued_at: string | null
+          issuer: string | null
+          listing_id: string
+          reference_masked: string | null
+          retention_until: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewer_id: string | null
+          scan_status: string
+          sha256: string | null
+          storage_key: string
+          uploaded_by: string
+          verification_id: string | null
+        }
+        Insert: {
+          access_class?: string
+          created_at?: string
+          document_type: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          issuer?: string | null
+          listing_id: string
+          reference_masked?: string | null
+          retention_until?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewer_id?: string | null
+          scan_status?: string
+          sha256?: string | null
+          storage_key: string
+          uploaded_by?: string
+          verification_id?: string | null
+        }
+        Update: {
+          access_class?: string
+          created_at?: string
+          document_type?: string
+          expires_at?: string | null
+          id?: string
+          issued_at?: string | null
+          issuer?: string | null
+          listing_id?: string
+          reference_masked?: string | null
+          retention_until?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewer_id?: string | null
+          scan_status?: string
+          sha256?: string | null
+          storage_key?: string
+          uploaded_by?: string
+          verification_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "evidence_documents_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "evidence_documents_verification_id_fkey"
+            columns: ["verification_id"]
+            isOneToOne: false
+            referencedRelation: "provider_verifications"
             referencedColumns: ["id"]
           },
         ]
@@ -223,6 +726,7 @@ export type Database = {
         Row: {
           accessible: boolean
           amenities: string[]
+          assurance_state: string
           available_from: string | null
           beds: number
           city: string | null
@@ -235,12 +739,15 @@ export type Database = {
           institution: string | null
           is_demo: boolean
           landlord_id: string | null
+          last_audited_at: string | null
           lat: number | null
           lgbtq_friendly: boolean
           lng: number | null
           location: string
           monthly_rent: number
+          next_review_at: string | null
           nsfas_accredited: boolean
+          organization_id: string | null
           owner_id: string
           pet_friendly: boolean
           province: string
@@ -253,6 +760,7 @@ export type Database = {
         Insert: {
           accessible?: boolean
           amenities?: string[]
+          assurance_state?: string
           available_from?: string | null
           beds?: number
           city?: string | null
@@ -265,12 +773,15 @@ export type Database = {
           institution?: string | null
           is_demo?: boolean
           landlord_id?: string | null
+          last_audited_at?: string | null
           lat?: number | null
           lgbtq_friendly?: boolean
           lng?: number | null
           location: string
           monthly_rent: number
+          next_review_at?: string | null
           nsfas_accredited?: boolean
+          organization_id?: string | null
           owner_id?: string
           pet_friendly?: boolean
           province: string
@@ -283,6 +794,7 @@ export type Database = {
         Update: {
           accessible?: boolean
           amenities?: string[]
+          assurance_state?: string
           available_from?: string | null
           beds?: number
           city?: string | null
@@ -295,12 +807,15 @@ export type Database = {
           institution?: string | null
           is_demo?: boolean
           landlord_id?: string | null
+          last_audited_at?: string | null
           lat?: number | null
           lgbtq_friendly?: boolean
           lng?: number | null
           location?: string
           monthly_rent?: number
+          next_review_at?: string | null
           nsfas_accredited?: boolean
+          organization_id?: string | null
           owner_id?: string
           pet_friendly?: boolean
           province?: string
@@ -316,6 +831,13 @@ export type Database = {
             columns: ["landlord_id"]
             isOneToOne: false
             referencedRelation: "landlords"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
             referencedColumns: ["id"]
           },
         ]
@@ -344,6 +866,77 @@ export type Database = {
           id?: string
           max_rent_zar?: number | null
           province?: string | null
+        }
+        Relationships: []
+      }
+      organization_memberships: {
+        Row: {
+          accepted_at: string | null
+          created_at: string
+          id: string
+          invited_by: string | null
+          member_role: string
+          organization_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          invited_by?: string | null
+          member_role?: string
+          organization_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string
+          id?: string
+          invited_by?: string | null
+          member_role?: string
+          organization_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organization_memberships_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          org_type: string
+          registration_number: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          org_type: string
+          registration_number?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          org_type?: string
+          registration_number?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -386,6 +979,116 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_verifications: {
+        Row: {
+          checked_at: string | null
+          checked_by: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          listing_id: string | null
+          method: string | null
+          notes_restricted: string | null
+          organization_id: string | null
+          reference_last4: string | null
+          source_authority: string
+          status: string
+          subject_name: string | null
+          updated_at: string
+          valid_from: string | null
+          verification_type: string
+        }
+        Insert: {
+          checked_at?: string | null
+          checked_by?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          listing_id?: string | null
+          method?: string | null
+          notes_restricted?: string | null
+          organization_id?: string | null
+          reference_last4?: string | null
+          source_authority: string
+          status?: string
+          subject_name?: string | null
+          updated_at?: string
+          valid_from?: string | null
+          verification_type: string
+        }
+        Update: {
+          checked_at?: string | null
+          checked_by?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          listing_id?: string | null
+          method?: string | null
+          notes_restricted?: string | null
+          organization_id?: string | null
+          reference_last4?: string | null
+          source_authority?: string
+          status?: string
+          subject_name?: string | null
+          updated_at?: string
+          valid_from?: string | null
+          verification_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_verifications_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_verifications_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_events: {
+        Row: {
+          actor_id: string
+          created_at: string
+          event_type: string
+          id: string
+          note: string | null
+          safety_report_id: string
+          visibility: string
+        }
+        Insert: {
+          actor_id?: string
+          created_at?: string
+          event_type: string
+          id?: string
+          note?: string | null
+          safety_report_id: string
+          visibility?: string
+        }
+        Update: {
+          actor_id?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          note?: string | null
+          safety_report_id?: string
+          visibility?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_events_safety_report_id_fkey"
+            columns: ["safety_report_id"]
+            isOneToOne: false
+            referencedRelation: "safety_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reviews: {
         Row: {
           comment: string | null
@@ -414,6 +1117,65 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "reviews_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_reports: {
+        Row: {
+          acknowledged_at: string | null
+          anonymous_to_landlord: boolean
+          assigned_to: string | null
+          category: string
+          closed_at: string | null
+          description: string
+          id: string
+          listing_id: string | null
+          occurred_at: string | null
+          reported_at: string
+          reporter_user_id: string | null
+          retention_until: string | null
+          status: string
+          urgency: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          anonymous_to_landlord?: boolean
+          assigned_to?: string | null
+          category: string
+          closed_at?: string | null
+          description: string
+          id?: string
+          listing_id?: string | null
+          occurred_at?: string | null
+          reported_at?: string
+          reporter_user_id?: string | null
+          retention_until?: string | null
+          status?: string
+          urgency?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          anonymous_to_landlord?: boolean
+          assigned_to?: string | null
+          category?: string
+          closed_at?: string | null
+          description?: string
+          id?: string
+          listing_id?: string | null
+          occurred_at?: string | null
+          reported_at?: string
+          reporter_user_id?: string | null
+          retention_until?: string | null
+          status?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_reports_listing_id_fkey"
             columns: ["listing_id"]
             isOneToOne: false
             referencedRelation: "listings"
@@ -465,6 +1227,53 @@ export type Database = {
         }
         Relationships: []
       }
+      utility_events: {
+        Row: {
+          confidence: string
+          created_at: string
+          created_by: string | null
+          ended_at: string | null
+          id: string
+          listing_id: string
+          public_summary: string | null
+          source: string
+          started_at: string
+          utility_type: string
+        }
+        Insert: {
+          confidence?: string
+          created_at?: string
+          created_by?: string | null
+          ended_at?: string | null
+          id?: string
+          listing_id: string
+          public_summary?: string | null
+          source: string
+          started_at: string
+          utility_type: string
+        }
+        Update: {
+          confidence?: string
+          created_at?: string
+          created_by?: string | null
+          ended_at?: string | null
+          id?: string
+          listing_id?: string
+          public_summary?: string | null
+          source?: string
+          started_at?: string
+          utility_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "utility_events_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       verification_documents: {
         Row: {
           created_at: string
@@ -503,11 +1312,27 @@ export type Database = {
     }
     Functions: {
       become_landlord: { Args: { _business_name: string }; Returns: string }
+      evidence_path_listing: { Args: { _name: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_assurance_staff: { Args: { _uid: string }; Returns: boolean }
+      listing_assurance: {
+        Args: { _listing: string }
+        Returns: {
+          assurance_state: string
+          last_audited_at: string
+          next_review_at: string
+          open_public_actions: number
+          verifications: Json
+        }[]
+      }
+      owns_listing: {
+        Args: { _listing: string; _uid: string }
         Returns: boolean
       }
       search_listings: {
@@ -529,6 +1354,7 @@ export type Database = {
         Returns: {
           accessible: boolean
           amenities: string[]
+          assurance_state: string
           available_from: string | null
           beds: number
           city: string | null
@@ -541,12 +1367,15 @@ export type Database = {
           institution: string | null
           is_demo: boolean
           landlord_id: string | null
+          last_audited_at: string | null
           lat: number | null
           lgbtq_friendly: boolean
           lng: number | null
           location: string
           monthly_rent: number
+          next_review_at: string | null
           nsfas_accredited: boolean
+          organization_id: string | null
           owner_id: string
           pet_friendly: boolean
           province: string

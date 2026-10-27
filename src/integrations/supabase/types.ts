@@ -1214,6 +1214,38 @@ export type Database = {
           },
         ]
       }
+      safety_access_log: {
+        Row: {
+          actor_id: string
+          case_id: string
+          created_at: string
+          id: number
+          purpose: string
+        }
+        Insert: {
+          actor_id?: string
+          case_id: string
+          created_at?: string
+          id?: never
+          purpose: string
+        }
+        Update: {
+          actor_id?: string
+          case_id?: string
+          created_at?: string
+          id?: never
+          purpose?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_access_log_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "safety_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       safety_case_events: {
         Row: {
           actor_id: string

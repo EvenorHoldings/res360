@@ -1,0 +1,10 @@
+CREATE TABLE public.safety_access_log(id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,actor_id uuid NOT NULL DEFAULT auth.uid(),case_id uuid NOT NULL REFERENCES public.safety_cases(id),purpose text NOT NULL CHECK(purpose IN ('assigned_case_review')),created_at timestamptz NOT NULL DEFAULT now());
+GRANT INSERT ON public.safety_access_log TO authenticated;
+GRANT ALL ON public.safety_access_log TO service_role;
+ALTER TABLE public.safety_access_log ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "assigned case access log" ON public.safety_access_log FOR INSERT TO authenticated WITH CHECK(actor_id=auth.uid() AND public.is_safety_staff() AND EXISTS(SELECT 1 FROM public.safety_cases c WHERE c.id=case_id AND c.assigned_to=auth.uid()));
+CREATE POLICY "legacy report events scope" ON public.report_events AS RESTRICTIVE FOR ALL TO authenticated USING(EXISTS(SELECT 1 FROM public.safety_reports r WHERE r.id=safety_report_id AND (r.reporter_user_id=auth.uid() AND visibility='reporter' OR r.assigned_to=auth.uid() AND public.is_safety_staff()))) WITH CHECK(EXISTS(SELECT 1 FROM public.safety_reports r WHERE r.id=safety_report_id AND r.assigned_to=auth.uid() AND public.is_safety_staff()));
+CREATE POLICY "legacy report mutation disabled" ON public.safety_reports AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK(false);
+CREATE POLICY "legacy report update assigned" ON public.safety_reports AS RESTRICTIVE FOR UPDATE TO authenticated USING(assigned_to=auth.uid() AND public.is_safety_staff()) WITH CHECK(assigned_to=auth.uid() AND public.is_safety_staff());
+CREATE OR REPLACE FUNCTION public.guard_private_case_rate() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN PERFORM pg_advisory_xact_lock(hashtext(NEW.reporter_user_id::text)); IF (SELECT count(*) FROM public.safety_cases WHERE reporter_user_id=NEW.reporter_user_id AND created_at>now()-interval '1 hour')>=5 THEN RAISE EXCEPTION 'Too many reports this hour'; END IF; RETURN NEW; END $$;
+CREATE TRIGGER private_case_rate BEFORE INSERT ON public.safety_cases FOR EACH ROW EXECUTE FUNCTION public.guard_private_case_rate();

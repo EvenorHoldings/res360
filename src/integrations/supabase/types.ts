@@ -617,6 +617,39 @@ export type Database = {
           },
         ]
       }
+      institution_locations: {
+        Row: {
+          aliases: string[]
+          city: string
+          id: string
+          institution_type: string
+          location_scope: string
+          name: string
+          national: boolean
+          province: string
+        }
+        Insert: {
+          aliases?: string[]
+          city: string
+          id: string
+          institution_type: string
+          location_scope?: string
+          name: string
+          national?: boolean
+          province: string
+        }
+        Update: {
+          aliases?: string[]
+          city?: string
+          id?: string
+          institution_type?: string
+          location_scope?: string
+          name?: string
+          national?: boolean
+          province?: string
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           id: string
@@ -775,6 +808,7 @@ export type Database = {
           id: string
           image_urls: string[]
           institution: string | null
+          institution_location_id: string | null
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null
@@ -812,6 +846,7 @@ export type Database = {
           id?: string
           image_urls?: string[]
           institution?: string | null
+          institution_location_id?: string | null
           is_demo?: boolean
           landlord_id?: string | null
           last_audited_at?: string | null
@@ -849,6 +884,7 @@ export type Database = {
           id?: string
           image_urls?: string[]
           institution?: string | null
+          institution_location_id?: string | null
           is_demo?: boolean
           landlord_id?: string | null
           last_audited_at?: string | null
@@ -873,6 +909,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "listings_institution_location_id_fkey"
+            columns: ["institution_location_id"]
+            isOneToOne: false
+            referencedRelation: "institution_locations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "listings_landlord_id_fkey"
             columns: ["landlord_id"]
@@ -1546,6 +1589,60 @@ export type Database = {
           id: string
           image_urls: string[]
           institution: string | null
+          institution_location_id: string | null
+          is_demo: boolean
+          landlord_id: string | null
+          last_audited_at: string | null
+          lat: number | null
+          lgbtq_friendly: boolean
+          lng: number | null
+          location: string
+          monthly_rent: number
+          next_review_at: string | null
+          nsfas_accredited: boolean
+          organization_id: string | null
+          owner_id: string
+          pet_friendly: boolean
+          province: string
+          published_at: string | null
+          readiness_data: Json
+          readiness_status: string
+          readiness_submitted_at: string | null
+          room_type: Database["public"]["Enums"]["room_type"] | null
+          status: string
+          suburb: string | null
+          title: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "listings"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      search_location_listings: {
+        Args: {
+          _city?: string
+          _institution?: string
+          _province?: string
+          _query?: string
+          _type?: string
+        }
+        Returns: {
+          accessible: boolean
+          amenities: string[]
+          assurance_state: string
+          available_from: string | null
+          beds: number
+          city: string | null
+          created_at: string
+          deposit_zar: number | null
+          description: string
+          distance_km: number | null
+          id: string
+          image_urls: string[]
+          institution: string | null
+          institution_location_id: string | null
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null

@@ -10,3 +10,4 @@
 - [ ] Phase 3: dated assurance detail and factual card labels without accreditation claims.
 - [ ] Phase 3: encrypted private concern submission, consent, emergency guidance and own case status.
 - [ ] Phase 3: scoped safety-staff case handling and verification.
+- [ ] Implement uploaded hierarchical location/institution requirements without changing layout or duplicating features; use official domain 360.org.

@@ -29,6 +29,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedMyReportsRouteImport } from './routes/_authenticated/my-reports'
 import { Route as AuthenticatedOperationsRouteImport } from './routes/_authenticated/operations'
 import { Route as AuthenticatedPortfolioRouteImport } from './routes/_authenticated/portfolio'
+import { Route as AuthenticatedSafetyOperationsRouteImport } from './routes/_authenticated/safety-operations'
 import { Route as ListingIdRouteImport } from './routes/listing.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -130,6 +131,12 @@ const AuthenticatedPortfolioRoute = AuthenticatedPortfolioRouteImport.update({
   path: '/portfolio',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSafetyOperationsRoute =
+  AuthenticatedSafetyOperationsRouteImport.update({
+    id: '/safety-operations',
+    path: '/safety-operations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ListingIdRoute = ListingIdRouteImport.update({
   id: '/listing/$id',
   path: '/listing/$id',
@@ -156,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/my-reports': typeof AuthenticatedMyReportsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/portfolio': typeof AuthenticatedPortfolioRoute
+  '/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRoutesByTo {
@@ -178,6 +186,7 @@ export interface FileRoutesByTo {
   '/my-reports': typeof AuthenticatedMyReportsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/portfolio': typeof AuthenticatedPortfolioRoute
+  '/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRoutesById {
@@ -202,6 +211,7 @@ export interface FileRoutesById {
   '/_authenticated/my-reports': typeof AuthenticatedMyReportsRoute
   '/_authenticated/operations': typeof AuthenticatedOperationsRoute
   '/_authenticated/portfolio': typeof AuthenticatedPortfolioRoute
+  '/_authenticated/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRouteTypes {
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/my-reports'
     | '/operations'
     | '/portfolio'
+    | '/safety-operations'
     | '/listing/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/my-reports'
     | '/operations'
     | '/portfolio'
+    | '/safety-operations'
     | '/listing/$id'
   id:
     | '__root__'
@@ -271,6 +283,7 @@ export interface FileRouteTypes {
     | '/_authenticated/my-reports'
     | '/_authenticated/operations'
     | '/_authenticated/portfolio'
+    | '/_authenticated/safety-operations'
     | '/listing/$id'
   fileRoutesById: FileRoutesById
 }
@@ -437,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortfolioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/safety-operations': {
+      id: '/_authenticated/safety-operations'
+      path: '/safety-operations'
+      fullPath: '/safety-operations'
+      preLoaderRoute: typeof AuthenticatedSafetyOperationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/listing/$id': {
       id: '/listing/$id'
       path: '/listing/$id'
@@ -451,12 +471,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMyReportsRoute: typeof AuthenticatedMyReportsRoute
   AuthenticatedOperationsRoute: typeof AuthenticatedOperationsRoute
   AuthenticatedPortfolioRoute: typeof AuthenticatedPortfolioRoute
+  AuthenticatedSafetyOperationsRoute: typeof AuthenticatedSafetyOperationsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMyReportsRoute: AuthenticatedMyReportsRoute,
   AuthenticatedOperationsRoute: AuthenticatedOperationsRoute,
   AuthenticatedPortfolioRoute: AuthenticatedPortfolioRoute,
+  AuthenticatedSafetyOperationsRoute: AuthenticatedSafetyOperationsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

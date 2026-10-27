@@ -50,6 +50,13 @@
       "when": 1793088803381,
       "tag": "0006_assurance_readiness_workflows",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793088924657,
+      "tag": "0007_assurance_review_integrity",
+      "breakpoints": true
     }
   ]
 }

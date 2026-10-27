@@ -1359,6 +1359,10 @@ export type Database = {
     }
     Functions: {
       become_landlord: { Args: { _business_name: string }; Returns: string }
+      decide_corrective_action: {
+        Args: { _action: string; _close: boolean; _reason: string }
+        Returns: undefined
+      }
       evidence_path_listing: { Args: { _name: string }; Returns: string }
       has_role: {
         Args: {

@@ -57,6 +57,13 @@
       "when": 1793088924657,
       "tag": "0007_assurance_review_integrity",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793088980229,
+      "tag": "0008_assurance_prevent_gate_bypass",
+      "breakpoints": true
     }
   ]
 }

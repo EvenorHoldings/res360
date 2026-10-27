@@ -11,6 +11,7 @@ export const Route = createFileRoute('/list')({
     <div className="flex flex-wrap gap-3 pt-2">
       <Button asChild className="rounded-full bg-photo-action text-photo-ink hover:bg-photo-action/90"><Link to="/">Start a listing</Link></Button>
       <Button asChild variant="outline" className="rounded-full text-photo-ink"><Link to="/signup">Create account</Link></Button>
+      <Button asChild variant="secondary"><Link to="/portfolio">Readiness workspace</Link></Button>
     </div>
   </PageBody>,
 });

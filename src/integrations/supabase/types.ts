@@ -378,6 +378,44 @@ export type Database = {
         }
         Relationships: []
       }
+      corrective_action_events: {
+        Row: {
+          action_id: string
+          actor_id: string
+          created_at: string
+          event_type: string
+          evidence_ids: string[]
+          id: string
+          note: string
+        }
+        Insert: {
+          action_id: string
+          actor_id?: string
+          created_at?: string
+          event_type: string
+          evidence_ids?: string[]
+          id?: string
+          note: string
+        }
+        Update: {
+          action_id?: string
+          actor_id?: string
+          created_at?: string
+          event_type?: string
+          evidence_ids?: string[]
+          id?: string
+          note?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corrective_action_events_action_id_fkey"
+            columns: ["action_id"]
+            isOneToOne: false
+            referencedRelation: "corrective_actions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       corrective_actions: {
         Row: {
           audit_id: string | null
@@ -752,6 +790,9 @@ export type Database = {
           pet_friendly: boolean
           province: string
           published_at: string | null
+          readiness_data: Json
+          readiness_status: string
+          readiness_submitted_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           status: string
           suburb: string | null
@@ -786,6 +827,9 @@ export type Database = {
           pet_friendly?: boolean
           province: string
           published_at?: string | null
+          readiness_data?: Json
+          readiness_status?: string
+          readiness_submitted_at?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           status?: string
           suburb?: string | null
@@ -820,6 +864,9 @@ export type Database = {
           pet_friendly?: boolean
           province?: string
           published_at?: string | null
+          readiness_data?: Json
+          readiness_status?: string
+          readiness_submitted_at?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           status?: string
           suburb?: string | null
@@ -1312,6 +1359,10 @@ export type Database = {
     }
     Functions: {
       become_landlord: { Args: { _business_name: string }; Returns: string }
+      decide_corrective_action: {
+        Args: { _action: string; _close: boolean; _reason: string }
+        Returns: undefined
+      }
       evidence_path_listing: { Args: { _name: string }; Returns: string }
       has_role: {
         Args: {
@@ -1334,6 +1385,23 @@ export type Database = {
       owns_listing: {
         Args: { _listing: string; _uid: string }
         Returns: boolean
+      }
+      respond_corrective_action: {
+        Args: {
+          _action: string
+          _appeal: boolean
+          _evidence?: string[]
+          _note: string
+        }
+        Returns: undefined
+      }
+      review_readiness: {
+        Args: { _approve: boolean; _listing: string; _reason: string }
+        Returns: undefined
+      }
+      save_readiness: {
+        Args: { _data: Json; _listing: string; _submit?: boolean }
+        Returns: undefined
       }
       search_listings: {
         Args: {
@@ -1380,6 +1448,9 @@ export type Database = {
           pet_friendly: boolean
           province: string
           published_at: string | null
+          readiness_data: Json
+          readiness_status: string
+          readiness_submitted_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           status: string
           suburb: string | null

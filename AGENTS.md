@@ -13,3 +13,5 @@
 - Public listings are read through RLS and submissions are owner-scoped pending rows; this keeps unapproved accommodation off public search.
 - AI listing recommendations run in a server function (src/lib/ai/*.server.ts) that reads only approved listings and validates returned ids; this keeps the AI key server-side and prevents invented listings.
 - Search map uses Leaflet + OpenStreetMap, lazy-loaded client-only, falling back to province centres when a listing lacks coordinates; Leaflet cannot run during server rendering.
+- Assurance workspaces live under the authenticated layout and use the existing browser client with RLS and narrowly scoped database workflow functions; this keeps owners isolated and staff mutations MFA-checked.
+- Audit capture is online-only and evidence is quarantined until a trusted scan marks it clean; this prevents unsafe offline overwrites and unscanned document access.

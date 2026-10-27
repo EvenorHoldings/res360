@@ -1,0 +1,5 @@
+function encode(bytes:Uint8Array){return btoa(Array.from(bytes,b=>String.fromCharCode(b)).join(''));}
+function decode(value:string){return Uint8Array.from(atob(value),c=>c.charCodeAt(0));}
+async function key(secret:string){return crypto.subtle.importKey('raw',await crypto.subtle.digest('SHA-256',new TextEncoder().encode(secret)),{name:'AES-GCM'},false,['encrypt','decrypt']);}
+export async function encryptPrivate(value:string,secret:string,owner:string){const iv=crypto.getRandomValues(new Uint8Array(12));const payload=await crypto.subtle.encrypt({name:'AES-GCM',iv,additionalData:new TextEncoder().encode(owner)},await key(secret),new TextEncoder().encode(value));return `v1:${encode(iv)}:${encode(new Uint8Array(payload))}`;}
+export async function decryptPrivate(value:string,secret:string,owner:string){const [version,iv,payload]=value.split(':');if(version!=='v1'||!iv||!payload)throw new Error('Unknown encrypted record version');return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:decode(iv),additionalData:new TextEncoder().encode(owner)},await key(secret),decode(payload)));}

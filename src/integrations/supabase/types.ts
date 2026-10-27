@@ -617,6 +617,39 @@ export type Database = {
           },
         ]
       }
+      institution_locations: {
+        Row: {
+          aliases: string[]
+          city: string
+          id: string
+          institution_type: string
+          location_scope: string
+          name: string
+          national: boolean
+          province: string
+        }
+        Insert: {
+          aliases?: string[]
+          city: string
+          id: string
+          institution_type: string
+          location_scope?: string
+          name: string
+          national?: boolean
+          province: string
+        }
+        Update: {
+          aliases?: string[]
+          city?: string
+          id?: string
+          institution_type?: string
+          location_scope?: string
+          name?: string
+          national?: boolean
+          province?: string
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           id: string
@@ -775,6 +808,7 @@ export type Database = {
           id: string
           image_urls: string[]
           institution: string | null
+          institution_location_id: string | null
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null
@@ -812,6 +846,7 @@ export type Database = {
           id?: string
           image_urls?: string[]
           institution?: string | null
+          institution_location_id?: string | null
           is_demo?: boolean
           landlord_id?: string | null
           last_audited_at?: string | null
@@ -849,6 +884,7 @@ export type Database = {
           id?: string
           image_urls?: string[]
           institution?: string | null
+          institution_location_id?: string | null
           is_demo?: boolean
           landlord_id?: string | null
           last_audited_at?: string | null
@@ -873,6 +909,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "listings_institution_location_id_fkey"
+            columns: ["institution_location_id"]
+            isOneToOne: false
+            referencedRelation: "institution_locations"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "listings_landlord_id_fkey"
             columns: ["landlord_id"]
@@ -1171,6 +1214,138 @@ export type Database = {
           },
         ]
       }
+      safety_access_log: {
+        Row: {
+          actor_id: string
+          case_id: string
+          created_at: string
+          id: number
+          purpose: string
+        }
+        Insert: {
+          actor_id?: string
+          case_id: string
+          created_at?: string
+          id?: never
+          purpose: string
+        }
+        Update: {
+          actor_id?: string
+          case_id?: string
+          created_at?: string
+          id?: never
+          purpose?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_access_log_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "safety_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_case_events: {
+        Row: {
+          actor_id: string
+          case_id: string
+          created_at: string
+          id: string
+          public_note: string
+          status: string
+        }
+        Insert: {
+          actor_id?: string
+          case_id: string
+          created_at?: string
+          id?: string
+          public_note: string
+          status: string
+        }
+        Update: {
+          actor_id?: string
+          case_id?: string
+          created_at?: string
+          id?: string
+          public_note?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_case_events_case_id_fkey"
+            columns: ["case_id"]
+            isOneToOne: false
+            referencedRelation: "safety_cases"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_cases: {
+        Row: {
+          acknowledged_at: string | null
+          assigned_to: string | null
+          category: string
+          closed_at: string | null
+          consent_at: string
+          created_at: string
+          encrypted_contact: string | null
+          encrypted_description: string
+          id: string
+          listing_id: string | null
+          notice_version: string
+          reporter_user_id: string
+          sharing_scope: string
+          status: string
+          updated_at: string
+          urgency: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          assigned_to?: string | null
+          category: string
+          closed_at?: string | null
+          consent_at?: string
+          created_at?: string
+          encrypted_contact?: string | null
+          encrypted_description: string
+          id?: string
+          listing_id?: string | null
+          notice_version: string
+          reporter_user_id?: string
+          sharing_scope: string
+          status?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          assigned_to?: string | null
+          category?: string
+          closed_at?: string | null
+          consent_at?: string
+          created_at?: string
+          encrypted_contact?: string | null
+          encrypted_description?: string
+          id?: string
+          listing_id?: string | null
+          notice_version?: string
+          reporter_user_id?: string
+          sharing_scope?: string
+          status?: string
+          updated_at?: string
+          urgency?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_cases_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       safety_reports: {
         Row: {
           acknowledged_at: string | null
@@ -1359,6 +1534,7 @@ export type Database = {
     }
     Functions: {
       become_landlord: { Args: { _business_name: string }; Returns: string }
+      claim_safety_case: { Args: { _case: string }; Returns: undefined }
       decide_corrective_action: {
         Args: { _action: string; _close: boolean; _reason: string }
         Returns: undefined
@@ -1372,6 +1548,7 @@ export type Database = {
         Returns: boolean
       }
       is_assurance_staff: { Args: { _uid: string }; Returns: boolean }
+      is_safety_staff: { Args: never; Returns: boolean }
       listing_assurance: {
         Args: { _listing: string }
         Returns: {
@@ -1386,6 +1563,7 @@ export type Database = {
         Args: { _listing: string; _uid: string }
         Returns: boolean
       }
+      public_assurance_detail: { Args: { _listing: string }; Returns: Json }
       respond_corrective_action: {
         Args: {
           _action: string
@@ -1398,6 +1576,16 @@ export type Database = {
       review_readiness: {
         Args: { _approve: boolean; _listing: string; _reason: string }
         Returns: undefined
+      }
+      safety_triage_queue: {
+        Args: never
+        Returns: {
+          category: string
+          created_at: string
+          id: string
+          status: string
+          urgency: string
+        }[]
       }
       save_readiness: {
         Args: { _data: Json; _listing: string; _submit?: boolean }
@@ -1433,6 +1621,7 @@ export type Database = {
           id: string
           image_urls: string[]
           institution: string | null
+          institution_location_id: string | null
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null
@@ -1462,6 +1651,63 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      search_location_listings: {
+        Args: {
+          _city?: string
+          _institution?: string
+          _province?: string
+          _query?: string
+          _type?: string
+        }
+        Returns: {
+          accessible: boolean
+          amenities: string[]
+          assurance_state: string
+          available_from: string | null
+          beds: number
+          city: string | null
+          created_at: string
+          deposit_zar: number | null
+          description: string
+          distance_km: number | null
+          id: string
+          image_urls: string[]
+          institution: string | null
+          institution_location_id: string | null
+          is_demo: boolean
+          landlord_id: string | null
+          last_audited_at: string | null
+          lat: number | null
+          lgbtq_friendly: boolean
+          lng: number | null
+          location: string
+          monthly_rent: number
+          next_review_at: string | null
+          nsfas_accredited: boolean
+          organization_id: string | null
+          owner_id: string
+          pet_friendly: boolean
+          province: string
+          published_at: string | null
+          readiness_data: Json
+          readiness_status: string
+          readiness_submitted_at: string | null
+          room_type: Database["public"]["Enums"]["room_type"] | null
+          status: string
+          suburb: string | null
+          title: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "listings"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
+      update_safety_case: {
+        Args: { _case: string; _note: string; _status: string }
+        Returns: undefined
       }
     }
     Enums: {

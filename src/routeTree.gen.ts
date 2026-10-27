@@ -21,12 +21,15 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PitchRouteImport } from './routes/pitch'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SafetyRouteImport } from './routes/safety'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AuthenticatedMyReportsRouteImport } from './routes/_authenticated/my-reports'
 import { Route as AuthenticatedOperationsRouteImport } from './routes/_authenticated/operations'
 import { Route as AuthenticatedPortfolioRouteImport } from './routes/_authenticated/portfolio'
+import { Route as AuthenticatedSafetyOperationsRouteImport } from './routes/_authenticated/safety-operations'
 import { Route as ListingIdRouteImport } from './routes/listing.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -88,6 +91,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SafetyRoute = SafetyRouteImport.update({
+  id: '/safety',
+  path: '/safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
@@ -108,6 +116,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMyReportsRoute = AuthenticatedMyReportsRouteImport.update({
+  id: '/my-reports',
+  path: '/my-reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedOperationsRoute = AuthenticatedOperationsRouteImport.update({
   id: '/operations',
   path: '/operations',
@@ -118,6 +131,12 @@ const AuthenticatedPortfolioRoute = AuthenticatedPortfolioRouteImport.update({
   path: '/portfolio',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSafetyOperationsRoute =
+  AuthenticatedSafetyOperationsRouteImport.update({
+    id: '/safety-operations',
+    path: '/safety-operations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const ListingIdRoute = ListingIdRouteImport.update({
   id: '/listing/$id',
   path: '/listing/$id',
@@ -136,12 +155,15 @@ export interface FileRoutesByFullPath {
   '/pitch': typeof PitchRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/safety': typeof SafetyRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/my-reports': typeof AuthenticatedMyReportsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/portfolio': typeof AuthenticatedPortfolioRoute
+  '/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRoutesByTo {
@@ -156,12 +178,15 @@ export interface FileRoutesByTo {
   '/pitch': typeof PitchRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/safety': typeof SafetyRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/my-reports': typeof AuthenticatedMyReportsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/portfolio': typeof AuthenticatedPortfolioRoute
+  '/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRoutesById {
@@ -178,12 +203,15 @@ export interface FileRoutesById {
   '/pitch': typeof PitchRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/safety': typeof SafetyRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
+  '/_authenticated/my-reports': typeof AuthenticatedMyReportsRoute
   '/_authenticated/operations': typeof AuthenticatedOperationsRoute
   '/_authenticated/portfolio': typeof AuthenticatedPortfolioRoute
+  '/_authenticated/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
 }
 export interface FileRouteTypes {
@@ -200,12 +228,15 @@ export interface FileRouteTypes {
     | '/pitch'
     | '/pricing'
     | '/privacy'
+    | '/safety'
     | '/saved'
     | '/search'
     | '/signup'
     | '/terms'
+    | '/my-reports'
     | '/operations'
     | '/portfolio'
+    | '/safety-operations'
     | '/listing/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -220,12 +251,15 @@ export interface FileRouteTypes {
     | '/pitch'
     | '/pricing'
     | '/privacy'
+    | '/safety'
     | '/saved'
     | '/search'
     | '/signup'
     | '/terms'
+    | '/my-reports'
     | '/operations'
     | '/portfolio'
+    | '/safety-operations'
     | '/listing/$id'
   id:
     | '__root__'
@@ -241,12 +275,15 @@ export interface FileRouteTypes {
     | '/pitch'
     | '/pricing'
     | '/privacy'
+    | '/safety'
     | '/saved'
     | '/search'
     | '/signup'
     | '/terms'
+    | '/_authenticated/my-reports'
     | '/_authenticated/operations'
     | '/_authenticated/portfolio'
+    | '/_authenticated/safety-operations'
     | '/listing/$id'
   fileRoutesById: FileRoutesById
 }
@@ -263,6 +300,7 @@ export interface RootRouteChildren {
   PitchRoute: typeof PitchRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  SafetyRoute: typeof SafetyRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
   SignupRoute: typeof SignupRoute
@@ -356,6 +394,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/safety': {
+      id: '/safety'
+      path: '/safety'
+      fullPath: '/safety'
+      preLoaderRoute: typeof SafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/saved': {
       id: '/saved'
       path: '/saved'
@@ -384,6 +429,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/my-reports': {
+      id: '/_authenticated/my-reports'
+      path: '/my-reports'
+      fullPath: '/my-reports'
+      preLoaderRoute: typeof AuthenticatedMyReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/operations': {
       id: '/_authenticated/operations'
       path: '/operations'
@@ -398,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPortfolioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/safety-operations': {
+      id: '/_authenticated/safety-operations'
+      path: '/safety-operations'
+      fullPath: '/safety-operations'
+      preLoaderRoute: typeof AuthenticatedSafetyOperationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/listing/$id': {
       id: '/listing/$id'
       path: '/listing/$id'
@@ -409,13 +468,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMyReportsRoute: typeof AuthenticatedMyReportsRoute
   AuthenticatedOperationsRoute: typeof AuthenticatedOperationsRoute
   AuthenticatedPortfolioRoute: typeof AuthenticatedPortfolioRoute
+  AuthenticatedSafetyOperationsRoute: typeof AuthenticatedSafetyOperationsRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMyReportsRoute: AuthenticatedMyReportsRoute,
   AuthenticatedOperationsRoute: AuthenticatedOperationsRoute,
   AuthenticatedPortfolioRoute: AuthenticatedPortfolioRoute,
+  AuthenticatedSafetyOperationsRoute: AuthenticatedSafetyOperationsRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -434,6 +497,7 @@ const rootRouteChildren: RootRouteChildren = {
   PitchRoute: PitchRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  SafetyRoute: SafetyRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
   SignupRoute: SignupRoute,

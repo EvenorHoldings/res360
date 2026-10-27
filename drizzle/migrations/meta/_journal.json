@@ -64,6 +64,27 @@
       "when": 1793088980229,
       "tag": "0008_assurance_prevent_gate_bypass",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793089279741,
+      "tag": "0009_private_student_safety_cases",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793089479278,
+      "tag": "0010_institution_location_directory",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793089579255,
+      "tag": "0011_safety_access_logging_and_legacy_lockdown",
+      "breakpoints": true
     }
   ]
 }

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useEffect, useState, type FormEvent } from 'react';
 import { z } from 'zod';
-import { BadgeCheck } from 'lucide-react';
+import { AssuranceDetail } from '@/components/assurance/AssuranceDetail';
 import { SiteFrame } from '@/components/SiteFrame';
 import { RentCalculator } from '@/components/RentCalculator';
 import { Button } from '@/components/ui/button';
@@ -54,7 +54,6 @@ function ListingPage() {
               {listing.deposit_zar != null && <p className="text-sm">Deposit {zar.format(listing.deposit_zar)}</p>}
               {listing.available_from && <p className="text-sm">Available from {new Date(listing.available_from).toLocaleDateString('en-ZA')}</p>}
               <div className="mt-3 flex flex-wrap gap-2 text-xs">
-                {listing.landlord_id && <span className="inline-flex items-center gap-1 rounded-full bg-photo-action px-2 py-1 text-photo-ink"><BadgeCheck size={14} aria-hidden="true" /> Verified host</span>}
                 {listing.lgbtq_friendly && <span className="rounded-full border border-photo-line px-2 py-1">🏳️‍🌈 LGBTQ+ Friendly</span>}
                 {listing.pet_friendly && <span className="rounded-full border border-photo-line px-2 py-1">🐾 Pet Friendly</span>}
                 {listing.accessible && <span className="rounded-full border border-photo-line px-2 py-1">♿ Accessible</span>}
@@ -62,6 +61,7 @@ function ListingPage() {
               </div>
               <p className="mt-4 whitespace-pre-line">{listing.description}</p>
               {listing.amenities.length > 0 && <><h2 className="mt-5 text-lg">Amenities</h2><ul className="mt-1 list-disc pl-5 text-sm">{listing.amenities.map((a) => <li key={a}>{a}</li>)}</ul></>}
+              <AssuranceDetail listingId={listing.id}/>
               <form onSubmit={enquire} className="mt-6 space-y-3 border-t border-photo-line pt-5">
                 <h2 className="text-lg">Request viewing</h2>
                 <label className="block text-sm">Message<textarea name="message" required maxLength={1000} className="mt-1 min-h-24 w-full rounded-md bg-photo-foreground p-3 text-photo-ink" /></label>

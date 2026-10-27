@@ -2,3 +2,6 @@
 - [x] Improve shared navigation, design tokens and slideshow.
 - [ ] Complete search, listing, saved, contact, and landlord pages; verify preview.
 - [ ] Badge removal blocked by account plan/editor permissions.
+- [ ] Phase 2: save-and-resume landlord readiness, private evidence metadata and review gate.
+- [ ] Phase 2: staff queue, assigned online inspections, reviewer decisions and corrective-action history.
+- [ ] Verify Phase 2 permissions and owner flow; document unavailable scanning/offline/staff dependencies.

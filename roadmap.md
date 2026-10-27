@@ -7,7 +7,8 @@
 - [ ] Authenticated end-to-end verification waits for the requesting user to sign in; session mint found no matching account.
 - [ ] Inspection scheduling waits for an authorised reviewer to publish a locally validated checklist; none is published.
 - [ ] Evidence review waits for a contracted virus-scanning service; uploads remain quarantined.
-- [ ] Phase 3: dated assurance detail and factual card labels without accreditation claims.
-- [ ] Phase 3: encrypted private concern submission, consent, emergency guidance and own case status.
-- [ ] Phase 3: scoped safety-staff case handling and verification.
-- [ ] Implement uploaded hierarchical location/institution requirements without changing layout or duplicating features; use official domain 360.org.
+- [x] Phase 3: dated assurance detail and factual card labels without accreditation claims.
+- [x] Phase 3: encrypted private concern submission, consent, emergency guidance and own case status.
+- [x] Phase 3: scoped safety-staff case handling (signed-in staff test waits on a staff account).
+- [x] Hierarchical province/city/institution search and host choices; page addresses use 360.org.
+- [ ] Connecting 360.org to the app waits on the domain owner (currently points to another host).

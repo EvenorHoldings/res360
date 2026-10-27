@@ -17,3 +17,4 @@
 - Audit capture is online-only and evidence is quarantined until a trusted scan marks it clean; this prevents unsafe offline overwrites and unscanned document access.
 - Safety reports use authenticated server functions and versioned AES-GCM ciphertext bound to reporter identity; only assigned MFA safety managers can decrypt, with metadata-only triage and reporter status projections.
 - Public assurance details use a narrow approved-listing RPC projection; never infer verification from landlord IDs or unconfirmed accreditation flags.
+- Institution choices come from src/data/institution-catalog.ts (Province → City → Institution, typed, with aliases) mirrored in the institution_locations table; search goes through the search_location_listings function so alias and city matching stay server-side.

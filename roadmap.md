@@ -16,7 +16,8 @@
 - [x] Block document uploads pending virus checking in storage and evidence metadata policies, with a tested interface guard.
 - [ ] Verify disabled upload controls in the live landlord workspace; waits for Vercel deployment and a signed-in landlord account.
 - [x] Initial security audit: patched review exposure, dependency advisories and browser headers; 17 tests passed and initial report generated.
-- [ ] Current security audit: restrict role probing, verified utility claims and staff settings; protect AI matching with sign-in and an atomic usage limit; test and deploy available patches.
+- [x] Current security audit: restricted role probing, owner verified utility claims and staff settings; AI matching requires sign-in and an atomic 10/hour quota. 23 tests pass; quick rescan has only eight intentional public-catalogue information notices. Database changes applied; Lovable publication requested (completion not yet confirmed).
+- [ ] Authenticated utility verification and 10/hour quota boundary tests require a real signed-in owner/staff account; backend currently has no auth users.
 - [ ] Fresh deep security audit is running; follow up on its completion notification.
 - [ ] Deploy application patches to res360.org; requires access to the existing Vercel deployment.
 

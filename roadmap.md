@@ -20,6 +20,8 @@
 - [ ] Deploy application patches to res360.org; requires access to the existing Vercel deployment.
 
 ## Guardrails brief
+- [ ] Import both uploaded residence CSVs through the admin importer with strict matching, confidence gates and no personal source contacts.
+- [ ] Add university-leased categorisation, institution-checked pet labels and draft payment-safety Help answers.
 - [x] Stage 1: provinces, cities, aliases, campuses, distance-to-campus, data health panel
 - [x] Stage 1 follow-up: campus picker, auto-fill, campus map positions
 - [ ] TVET campus lists (needs DHET/college source); staff review of 17 flagged campus positions (2 still have no position)

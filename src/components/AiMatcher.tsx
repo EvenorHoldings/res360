@@ -21,6 +21,9 @@ export function AiMatcher() {
     if (text.trim().length < 10) { setError('Tell us a little more (at least 10 characters).'); return; }
     setBusy(true); setError(''); setMatches(null);
     try {
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { setError('Please sign in to use AI matching.'); setBusy(false); return; }
       const res = await recommend({ data: { request: text } });
       if (!res.ok) { setError(res.message); }
       else {

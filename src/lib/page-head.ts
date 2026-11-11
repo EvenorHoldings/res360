@@ -1,5 +1,5 @@
 export function pageHead(title: string, description: string, path: string) {
-  const url = `https://360.org${path}`;
+  const url = `https://res360.org${path}`;
   return { meta: [
     { title }, { name: 'description', content: description },
     { property: 'og:title', content: title }, { property: 'og:description', content: description },

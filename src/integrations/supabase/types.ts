@@ -753,6 +753,106 @@ export type Database = {
         }
         Relationships: []
       }
+      help_articles: {
+        Row: {
+          answer_md: string
+          audience: string
+          category_id: string | null
+          helpful_no: number
+          helpful_yes: number
+          id: string
+          question: string
+          sort: number | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          answer_md: string
+          audience?: string
+          category_id?: string | null
+          helpful_no?: number
+          helpful_yes?: number
+          id?: string
+          question: string
+          sort?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          answer_md?: string
+          audience?: string
+          category_id?: string | null
+          helpful_no?: number
+          helpful_yes?: number
+          id?: string
+          question?: string
+          sort?: number | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "help_articles_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "help_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      help_categories: {
+        Row: {
+          audience: string
+          id: string
+          slug: string
+          sort: number | null
+          title: string
+        }
+        Insert: {
+          audience?: string
+          id?: string
+          slug: string
+          sort?: number | null
+          title: string
+        }
+        Update: {
+          audience?: string
+          id?: string
+          slug?: string
+          sort?: number | null
+          title?: string
+        }
+        Relationships: []
+      }
+      help_votes: {
+        Row: {
+          article_id: string
+          created_at: string
+          helpful: boolean
+          session_id: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          helpful: boolean
+          session_id: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          helpful?: boolean
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "help_votes_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "help_articles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institution_locations: {
         Row: {
           aliases: string[]
@@ -1667,16 +1767,19 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          emergency_contacts: Json
           id: number
           show_demo_listings: boolean
           updated_at: string
         }
         Insert: {
+          emergency_contacts?: Json
           id?: number
           show_demo_listings?: boolean
           updated_at?: string
         }
         Update: {
+          emergency_contacts?: Json
           id?: number
           show_demo_listings?: boolean
           updated_at?: string
@@ -1997,6 +2100,10 @@ export type Database = {
       update_safety_case: {
         Args: { _case: string; _note: string; _status: string }
         Returns: undefined
+      }
+      vote_help_article: {
+        Args: { _article: string; _helpful: boolean; _session: string }
+        Returns: boolean
       }
     }
     Enums: {

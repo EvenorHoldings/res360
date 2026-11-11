@@ -127,6 +127,13 @@
       "when": 1794377995151,
       "tag": "0017_help_centre",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1794378135730,
+      "tag": "0018_support_assistant",
+      "breakpoints": true
     }
   ]
 }

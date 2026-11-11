@@ -26,4 +26,6 @@
 - [x] Stage 2: residence data rules, importer, demo listings, 30-day expiry
 - [ ] Reminder emails for stale listings (alerts saved in-app; email sending not set up)
 - [x] Stage 3: help centre (10 draft answers await owner confirmation)
-- [ ] Stage 4: AI assistant (re-read full brief section)
+- [x] Stage 4: AI assistant, issue summaries, Visitor issues panel, retention, privacy deletion path
+- [ ] Safety email alerts to staff (email sending not set up; staff_alert_email empty)
+- [ ] Brief sections 5-7 (features, operations, acceptance report)

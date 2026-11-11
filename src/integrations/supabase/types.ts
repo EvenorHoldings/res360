@@ -1767,24 +1767,171 @@ export type Database = {
       }
       site_settings: {
         Row: {
+          assistant_daily_cost_cap: number
+          assistant_system_prompt: string
           emergency_contacts: Json
           id: number
           show_demo_listings: boolean
+          staff_alert_email: string | null
           updated_at: string
         }
         Insert: {
+          assistant_daily_cost_cap?: number
+          assistant_system_prompt?: string
           emergency_contacts?: Json
           id?: number
           show_demo_listings?: boolean
+          staff_alert_email?: string | null
           updated_at?: string
         }
         Update: {
+          assistant_daily_cost_cap?: number
+          assistant_system_prompt?: string
           emergency_contacts?: Json
           id?: number
           show_demo_listings?: boolean
+          staff_alert_email?: string | null
           updated_at?: string
         }
         Relationships: []
+      }
+      support_conversations: {
+        Row: {
+          consent_at: string
+          created_at: string
+          ended_at: string | null
+          id: string
+          ip_hash: string | null
+          language: string | null
+          last_message_at: string
+          page_path: string | null
+          session_id: string
+          summarised_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          consent_at: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          ip_hash?: string | null
+          language?: string | null
+          last_message_at?: string
+          page_path?: string | null
+          session_id: string
+          summarised_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          consent_at?: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          ip_hash?: string | null
+          language?: string | null
+          last_message_at?: string
+          page_path?: string | null
+          session_id?: string
+          summarised_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      support_issues: {
+        Row: {
+          category: string
+          conversation_id: string | null
+          created_at: string
+          id: string
+          institution_id: string | null
+          province_id: number | null
+          sentiment: string | null
+          severity: Database["public"]["Enums"]["issue_severity"]
+          status: string
+          suggested_action: string | null
+          summary: string
+        }
+        Insert: {
+          category: string
+          conversation_id?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          province_id?: number | null
+          sentiment?: string | null
+          severity?: Database["public"]["Enums"]["issue_severity"]
+          status?: string
+          suggested_action?: string | null
+          summary: string
+        }
+        Update: {
+          category?: string
+          conversation_id?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          province_id?: number | null
+          sentiment?: string | null
+          severity?: Database["public"]["Enums"]["issue_severity"]
+          status?: string
+          suggested_action?: string | null
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_issues_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "support_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_issues_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "support_issues_province_id_fkey"
+            columns: ["province_id"]
+            isOneToOne: false
+            referencedRelation: "provinces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_messages: {
+        Row: {
+          content_redacted: string
+          conversation_id: string
+          created_at: string
+          id: string
+          role: string
+        }
+        Insert: {
+          content_redacted: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          role: string
+        }
+        Update: {
+          content_redacted?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "support_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -2097,6 +2244,7 @@ export type Database = {
         }
       }
       show_demo_listings: { Args: never; Returns: boolean }
+      support_retention: { Args: never; Returns: undefined }
       update_safety_case: {
         Args: { _case: string; _note: string; _status: string }
         Returns: undefined
@@ -2115,6 +2263,7 @@ export type Database = {
         | "reviewer"
         | "safety_manager"
         | "institution_partner"
+      issue_severity: "low" | "medium" | "high" | "safety"
       room_type: "single" | "sharing" | "studio" | "bachelor"
     }
     CompositeTypes: {
@@ -2252,6 +2401,7 @@ export const Constants = {
         "safety_manager",
         "institution_partner",
       ],
+      issue_severity: ["low", "medium", "high", "safety"],
       room_type: ["single", "sharing", "studio", "bachelor"],
     },
   },

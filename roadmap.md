@@ -18,3 +18,10 @@
 - [x] Initial security audit: patched review exposure, dependency advisories and browser headers; 17 tests passed and initial report generated.
 - [ ] Deep security audit is running; findings require follow-up when the scan completes.
 - [ ] Deploy application patches to res360.org; requires access to the existing Vercel deployment.
+
+## Guardrails brief
+- [x] Stage 1: provinces, cities, aliases, campuses, distance-to-campus, data health panel
+- [ ] Stage 1 follow-up: campus picker in forms, map positions for campuses (one-off lookup), TVET campus lists
+- [ ] Stage 2: residence data rules, importer, demo listings, 30-day expiry
+- [ ] Stage 3: help centre
+- [ ] Stage 4: AI assistant (re-read full brief section)

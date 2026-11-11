@@ -351,6 +351,103 @@ export type Database = {
           },
         ]
       }
+      campuses: {
+        Row: {
+          city_id: string
+          id: string
+          institution_id: string
+          is_main: boolean
+          lat: number | null
+          lng: number | null
+          name: string
+        }
+        Insert: {
+          city_id: string
+          id?: string
+          institution_id: string
+          is_main?: boolean
+          lat?: number | null
+          lng?: number | null
+          name: string
+        }
+        Update: {
+          city_id?: string
+          id?: string
+          institution_id?: string
+          is_main?: boolean
+          lat?: number | null
+          lng?: number | null
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campuses_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campuses_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cities: {
+        Row: {
+          id: string
+          is_other: boolean
+          name: string
+          province_id: number
+        }
+        Insert: {
+          id?: string
+          is_other?: boolean
+          name: string
+          province_id: number
+        }
+        Update: {
+          id?: string
+          is_other?: boolean
+          name?: string
+          province_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cities_province_id_fkey"
+            columns: ["province_id"]
+            isOneToOne: false
+            referencedRelation: "provinces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      city_aliases: {
+        Row: {
+          alias: string
+          city_id: string
+        }
+        Insert: {
+          alias: string
+          city_id: string
+        }
+        Update: {
+          alias?: string
+          city_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "city_aliases_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       consents: {
         Row: {
           granted_at: string
@@ -617,6 +714,39 @@ export type Database = {
           },
         ]
       }
+      geo_backfill_unmatched: {
+        Row: {
+          city_text: string | null
+          created_at: string
+          id: string
+          institution_text: string | null
+          listing_id: string
+          province_text: string | null
+          reason: string
+          resolved_at: string | null
+        }
+        Insert: {
+          city_text?: string | null
+          created_at?: string
+          id?: string
+          institution_text?: string | null
+          listing_id: string
+          province_text?: string | null
+          reason: string
+          resolved_at?: string | null
+        }
+        Update: {
+          city_text?: string | null
+          created_at?: string
+          id?: string
+          institution_text?: string | null
+          listing_id?: string
+          province_text?: string | null
+          reason?: string
+          resolved_at?: string | null
+        }
+        Relationships: []
+      }
       institution_locations: {
         Row: {
           aliases: string[]
@@ -652,24 +782,50 @@ export type Database = {
       }
       institutions: {
         Row: {
+          accreditation_ref: string | null
+          home_province_id: number | null
           id: string
+          is_national: boolean
+          kind: string | null
+          last_verified_at: string | null
           name: string
+          official_url: string | null
           province: string | null
           sort_order: number
         }
         Insert: {
+          accreditation_ref?: string | null
+          home_province_id?: number | null
           id?: string
+          is_national?: boolean
+          kind?: string | null
+          last_verified_at?: string | null
           name: string
+          official_url?: string | null
           province?: string | null
           sort_order?: number
         }
         Update: {
+          accreditation_ref?: string | null
+          home_province_id?: number | null
           id?: string
+          is_national?: boolean
+          kind?: string | null
+          last_verified_at?: string | null
           name?: string
+          official_url?: string | null
           province?: string | null
           sort_order?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "institutions_home_province_id_fkey"
+            columns: ["home_province_id"]
+            isOneToOne: false
+            referencedRelation: "provinces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       investor_leads: {
         Row: {
@@ -800,11 +956,14 @@ export type Database = {
           assurance_state: string
           available_from: string | null
           beds: number
+          campus_id: string | null
           city: string | null
+          city_id: string | null
           created_at: string
           deposit_zar: number | null
           description: string
           distance_km: number | null
+          distance_to_campus_km: number | null
           id: string
           image_urls: string[]
           institution: string | null
@@ -812,6 +971,7 @@ export type Database = {
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null
+          last_confirmed_at: string | null
           lat: number | null
           lgbtq_friendly: boolean
           lng: number | null
@@ -823,14 +983,18 @@ export type Database = {
           owner_id: string
           pet_friendly: boolean
           province: string
+          province_id: number | null
           published_at: string | null
           readiness_data: Json
           readiness_status: string
           readiness_submitted_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
+          source: string
+          source_url: string | null
           status: string
           suburb: string | null
           title: string
+          verification_status: string
         }
         Insert: {
           accessible?: boolean
@@ -838,11 +1002,14 @@ export type Database = {
           assurance_state?: string
           available_from?: string | null
           beds?: number
+          campus_id?: string | null
           city?: string | null
+          city_id?: string | null
           created_at?: string
           deposit_zar?: number | null
           description: string
           distance_km?: number | null
+          distance_to_campus_km?: number | null
           id?: string
           image_urls?: string[]
           institution?: string | null
@@ -850,6 +1017,7 @@ export type Database = {
           is_demo?: boolean
           landlord_id?: string | null
           last_audited_at?: string | null
+          last_confirmed_at?: string | null
           lat?: number | null
           lgbtq_friendly?: boolean
           lng?: number | null
@@ -861,14 +1029,18 @@ export type Database = {
           owner_id?: string
           pet_friendly?: boolean
           province: string
+          province_id?: number | null
           published_at?: string | null
           readiness_data?: Json
           readiness_status?: string
           readiness_submitted_at?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
+          source?: string
+          source_url?: string | null
           status?: string
           suburb?: string | null
           title: string
+          verification_status?: string
         }
         Update: {
           accessible?: boolean
@@ -876,11 +1048,14 @@ export type Database = {
           assurance_state?: string
           available_from?: string | null
           beds?: number
+          campus_id?: string | null
           city?: string | null
+          city_id?: string | null
           created_at?: string
           deposit_zar?: number | null
           description?: string
           distance_km?: number | null
+          distance_to_campus_km?: number | null
           id?: string
           image_urls?: string[]
           institution?: string | null
@@ -888,6 +1063,7 @@ export type Database = {
           is_demo?: boolean
           landlord_id?: string | null
           last_audited_at?: string | null
+          last_confirmed_at?: string | null
           lat?: number | null
           lgbtq_friendly?: boolean
           lng?: number | null
@@ -899,16 +1075,34 @@ export type Database = {
           owner_id?: string
           pet_friendly?: boolean
           province?: string
+          province_id?: number | null
           published_at?: string | null
           readiness_data?: Json
           readiness_status?: string
           readiness_submitted_at?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
+          source?: string
+          source_url?: string | null
           status?: string
           suburb?: string | null
           title?: string
+          verification_status?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "listings_campus_id_fkey"
+            columns: ["campus_id"]
+            isOneToOne: false
+            referencedRelation: "campuses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "cities"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "listings_institution_location_id_fkey"
             columns: ["institution_location_id"]
@@ -928,6 +1122,13 @@ export type Database = {
             columns: ["organization_id"]
             isOneToOne: false
             referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_province_id_fkey"
+            columns: ["province_id"]
+            isOneToOne: false
+            referencedRelation: "provinces"
             referencedColumns: ["id"]
           },
         ]
@@ -1140,6 +1341,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      provinces: {
+        Row: {
+          code: string
+          id: number
+          name: string
+        }
+        Insert: {
+          code: string
+          id: number
+          name: string
+        }
+        Update: {
+          code?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
       }
       report_events: {
         Row: {
@@ -1540,12 +1759,17 @@ export type Database = {
         Returns: undefined
       }
       evidence_path_listing: { Args: { _name: string }; Returns: string }
+      get_data_health: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      haversine_km: {
+        Args: { a_lat: number; a_lng: number; b_lat: number; b_lng: number }
+        Returns: number
       }
       is_assurance_staff: { Args: { _uid: string }; Returns: boolean }
       is_safety_staff: { Args: never; Returns: boolean }
@@ -1613,11 +1837,14 @@ export type Database = {
           assurance_state: string
           available_from: string | null
           beds: number
+          campus_id: string | null
           city: string | null
+          city_id: string | null
           created_at: string
           deposit_zar: number | null
           description: string
           distance_km: number | null
+          distance_to_campus_km: number | null
           id: string
           image_urls: string[]
           institution: string | null
@@ -1625,6 +1852,7 @@ export type Database = {
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null
+          last_confirmed_at: string | null
           lat: number | null
           lgbtq_friendly: boolean
           lng: number | null
@@ -1636,14 +1864,18 @@ export type Database = {
           owner_id: string
           pet_friendly: boolean
           province: string
+          province_id: number | null
           published_at: string | null
           readiness_data: Json
           readiness_status: string
           readiness_submitted_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
+          source: string
+          source_url: string | null
           status: string
           suburb: string | null
           title: string
+          verification_status: string
         }[]
         SetofOptions: {
           from: "*"
@@ -1666,11 +1898,14 @@ export type Database = {
           assurance_state: string
           available_from: string | null
           beds: number
+          campus_id: string | null
           city: string | null
+          city_id: string | null
           created_at: string
           deposit_zar: number | null
           description: string
           distance_km: number | null
+          distance_to_campus_km: number | null
           id: string
           image_urls: string[]
           institution: string | null
@@ -1678,6 +1913,7 @@ export type Database = {
           is_demo: boolean
           landlord_id: string | null
           last_audited_at: string | null
+          last_confirmed_at: string | null
           lat: number | null
           lgbtq_friendly: boolean
           lng: number | null
@@ -1689,14 +1925,18 @@ export type Database = {
           owner_id: string
           pet_friendly: boolean
           province: string
+          province_id: number | null
           published_at: string | null
           readiness_data: Json
           readiness_status: string
           readiness_submitted_at: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
+          source: string
+          source_url: string | null
           status: string
           suburb: string | null
           title: string
+          verification_status: string
         }[]
         SetofOptions: {
           from: "*"

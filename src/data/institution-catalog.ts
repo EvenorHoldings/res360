@@ -1864,6 +1864,10 @@ export const INSTITUTION_CATALOG:InstitutionEntry[]=[
   }
 ];
 export const PROVINCES=Array.from(new Set(INSTITUTION_CATALOG.map(i=>i.province))).sort();
-export function citiesFor(province:string){return Array.from(new Set(INSTITUTION_CATALOG.filter(i=>!province||i.province===province).map(i=>i.city))).sort();}
-export function institutionsFor(province='',city='',type=''){return INSTITUTION_CATALOG.filter(i=>(i.national||((!province||i.province===province)&&(!city||i.city===city)))&&(!type||i.type===type));}
+export const CITY_ALIASES:Record<string,string>={'Port Elizabeth':'Gqeberha','Gqeberha (Port Elizabeth)':'Gqeberha','Nelspruit':'Mbombela','Nelspruit / Mbombela':'Mbombela','Grahamstown':'Makhanda','Makhanda (Grahamstown)':'Makhanda','Turfloop':'Mankweng','Mankweng (Turfloop)':'Mankweng','Springs':'Ekurhuleni','Germiston':'Ekurhuleni','Ekurhuleni (Springs / Germiston)':'Ekurhuleni','Qwaqwa':'Phuthaditjhaba','Queenstown':'Komani','Witbank':'Emalahleni','Mafikeng':'Mahikeng'};
+const ALIAS_LOWER=Object.fromEntries(Object.entries(CITY_ALIASES).map(([k,v])=>[k.toLowerCase(),v]));
+/** Resolves aliases and legacy "Other X" entries to the canonical city name. */
+export function canonicalCity(city:string,province=''){const c=city.trim();if(/^Other\b/i.test(c))return `Other town in ${province||c.replace(/^Other\s+(town in\s+)?/i,'').replace(/^KZN$/,'KwaZulu-Natal')}`;return ALIAS_LOWER[c.toLowerCase()]??c;}
+export function citiesFor(province:string){const list=INSTITUTION_CATALOG.filter(i=>!province||i.province===province).map(i=>canonicalCity(i.city,i.province));const named=Array.from(new Set(list.filter(c=>!c.startsWith('Other town'))));named.sort();const others=province?[`Other town in ${province}`]:PROVINCES.map(p=>`Other town in ${p}`);return [...named,...others];}
+export function institutionsFor(province='',city='',type=''){const want=city?canonicalCity(city,province):'';return INSTITUTION_CATALOG.filter(i=>(i.national||((!province||i.province===province)&&(!want||want.startsWith('Other town')||canonicalCity(i.city,i.province)===want)))&&(!type||i.type===type));}
 export function matchingInstitutions(query:string){const q=query.trim().toLowerCase().replace(/^near\s+/,'');return q?INSTITUTION_CATALOG.filter(i=>[i.name,...i.aliases].some(a=>a.toLowerCase().includes(q))):[];}

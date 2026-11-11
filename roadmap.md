@@ -21,7 +21,8 @@
 
 ## Guardrails brief
 - [x] Stage 1: provinces, cities, aliases, campuses, distance-to-campus, data health panel
-- [ ] Stage 1 follow-up: campus picker in forms, map positions for campuses (one-off lookup), TVET campus lists
+- [x] Stage 1 follow-up: campus picker, auto-fill, campus map positions
+- [ ] TVET campus lists (needs DHET/college source); staff review of 18 flagged campus positions
 - [ ] Stage 2: residence data rules, importer, demo listings, 30-day expiry
 - [ ] Stage 3: help centre
 - [ ] Stage 4: AI assistant (re-read full brief section)

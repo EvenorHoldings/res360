@@ -985,15 +985,18 @@ export type Database = {
           monthly_rent: number
           next_review_at: string | null
           nsfas_accredited: boolean
+          nsfas_verified: boolean
           organization_id: string | null
           owner_id: string
           pet_friendly: boolean
+          price_on_request: boolean
           province: string
           province_id: number | null
           published_at: string | null
           readiness_data: Json
           readiness_status: string
           readiness_submitted_at: string | null
+          residence_type: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           source: string
           source_url: string | null
@@ -1031,15 +1034,18 @@ export type Database = {
           monthly_rent: number
           next_review_at?: string | null
           nsfas_accredited?: boolean
+          nsfas_verified?: boolean
           organization_id?: string | null
           owner_id?: string
           pet_friendly?: boolean
+          price_on_request?: boolean
           province: string
           province_id?: number | null
           published_at?: string | null
           readiness_data?: Json
           readiness_status?: string
           readiness_submitted_at?: string | null
+          residence_type?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           source?: string
           source_url?: string | null
@@ -1077,15 +1083,18 @@ export type Database = {
           monthly_rent?: number
           next_review_at?: string | null
           nsfas_accredited?: boolean
+          nsfas_verified?: boolean
           organization_id?: string | null
           owner_id?: string
           pet_friendly?: boolean
+          price_on_request?: boolean
           province?: string
           province_id?: number | null
           published_at?: string | null
           readiness_data?: Json
           readiness_status?: string
           readiness_submitted_at?: string | null
+          residence_type?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           source?: string
           source_url?: string | null
@@ -1656,6 +1665,24 @@ export type Database = {
           },
         ]
       }
+      site_settings: {
+        Row: {
+          id: number
+          show_demo_listings: boolean
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          show_demo_listings?: boolean
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          show_demo_listings?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -1760,11 +1787,16 @@ export type Database = {
     Functions: {
       become_landlord: { Args: { _business_name: string }; Returns: string }
       claim_safety_case: { Args: { _case: string }; Returns: undefined }
+      confirm_listing_available: {
+        Args: { _listing: string }
+        Returns: undefined
+      }
       decide_corrective_action: {
         Args: { _action: string; _close: boolean; _reason: string }
         Returns: undefined
       }
       evidence_path_listing: { Args: { _name: string }; Returns: string }
+      expire_stale_listings: { Args: never; Returns: number }
       get_data_health: { Args: never; Returns: Json }
       has_role: {
         Args: {
@@ -1776,6 +1808,10 @@ export type Database = {
       haversine_km: {
         Args: { a_lat: number; a_lng: number; b_lat: number; b_lng: number }
         Returns: number
+      }
+      import_directory_listings: {
+        Args: { _rows: Json; _source: string }
+        Returns: Json
       }
       is_assurance_staff: { Args: { _uid: string }; Returns: boolean }
       is_safety_staff: { Args: never; Returns: boolean }
@@ -1866,15 +1902,18 @@ export type Database = {
           monthly_rent: number
           next_review_at: string | null
           nsfas_accredited: boolean
+          nsfas_verified: boolean
           organization_id: string | null
           owner_id: string
           pet_friendly: boolean
+          price_on_request: boolean
           province: string
           province_id: number | null
           published_at: string | null
           readiness_data: Json
           readiness_status: string
           readiness_submitted_at: string | null
+          residence_type: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           source: string
           source_url: string | null
@@ -1927,15 +1966,18 @@ export type Database = {
           monthly_rent: number
           next_review_at: string | null
           nsfas_accredited: boolean
+          nsfas_verified: boolean
           organization_id: string | null
           owner_id: string
           pet_friendly: boolean
+          price_on_request: boolean
           province: string
           province_id: number | null
           published_at: string | null
           readiness_data: Json
           readiness_status: string
           readiness_submitted_at: string | null
+          residence_type: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           source: string
           source_url: string | null
@@ -1951,6 +1993,7 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      show_demo_listings: { Args: never; Returns: boolean }
       update_safety_case: {
         Args: { _case: string; _note: string; _status: string }
         Returns: undefined

@@ -21,7 +21,7 @@ const leasedUkzn = new Set(['Ambassador Residence','Absa Residence','Welkom Resi
 export function prepareDirectoryRows(rows: Record<string,string>[]): Record<string,string>[] {
   return rows.map(row => {
     const clean = Object.fromEntries([...DIRECTORY_COLUMNS, 'notes'].map(k => [k, (row[k] ?? '').replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[removed]').replace(/(?:\+27|\b0)[ ()-]*\d{2}[ ()-]*\d{3}[ ()-]*\d{4}\b/g, '[removed]')]));
-    if (clean.institution === 'University of KwaZulu-Natal' && clean.campus === 'Pietermaritzburg' && leasedUkzn.has(clean.name)) clean.residence_type = 'university_leased';
+    if (clean['institution'] === 'University of KwaZulu-Natal' && clean['campus'] === 'Pietermaritzburg' && leasedUkzn.has(clean['name'] ?? '')) clean['residence_type'] = 'university_leased';
     return clean;
   });
 }

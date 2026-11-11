@@ -31,6 +31,8 @@ import { Route as AuthenticatedOperationsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedPortfolioRouteImport } from './routes/_authenticated/portfolio'
 import { Route as AuthenticatedSafetyOperationsRouteImport } from './routes/_authenticated/safety-operations'
 import { Route as ListingIdRouteImport } from './routes/listing.$id'
+import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
+import { Route as ApiPublicAssistantEndRouteImport } from './routes/api/public/assistant-end'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -142,6 +144,16 @@ const ListingIdRoute = ListingIdRouteImport.update({
   path: '/listing/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAssistantEndRoute = ApiPublicAssistantEndRouteImport.update({
+  id: '/api/public/assistant-end',
+  path: '/api/public/assistant-end',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -165,6 +177,8 @@ export interface FileRoutesByFullPath {
   '/portfolio': typeof AuthenticatedPortfolioRoute
   '/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
+  '/api/public/assistant-end': typeof ApiPublicAssistantEndRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -188,6 +202,8 @@ export interface FileRoutesByTo {
   '/portfolio': typeof AuthenticatedPortfolioRoute
   '/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
+  '/api/public/assistant-end': typeof ApiPublicAssistantEndRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -213,6 +229,8 @@ export interface FileRoutesById {
   '/_authenticated/portfolio': typeof AuthenticatedPortfolioRoute
   '/_authenticated/safety-operations': typeof AuthenticatedSafetyOperationsRoute
   '/listing/$id': typeof ListingIdRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
+  '/api/public/assistant-end': typeof ApiPublicAssistantEndRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -238,6 +256,8 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/safety-operations'
     | '/listing/$id'
+    | '/api/public/assistant'
+    | '/api/public/assistant-end'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -261,6 +281,8 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/safety-operations'
     | '/listing/$id'
+    | '/api/public/assistant'
+    | '/api/public/assistant-end'
   id:
     | '__root__'
     | '/'
@@ -285,6 +307,8 @@ export interface FileRouteTypes {
     | '/_authenticated/portfolio'
     | '/_authenticated/safety-operations'
     | '/listing/$id'
+    | '/api/public/assistant'
+    | '/api/public/assistant-end'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -306,6 +330,8 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
   ListingIdRoute: typeof ListingIdRoute
+  ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
+  ApiPublicAssistantEndRoute: typeof ApiPublicAssistantEndRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -464,6 +490,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ListingIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/assistant-end': {
+      id: '/api/public/assistant-end'
+      path: '/api/public/assistant-end'
+      fullPath: '/api/public/assistant-end'
+      preLoaderRoute: typeof ApiPublicAssistantEndRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -503,6 +543,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
   ListingIdRoute: ListingIdRoute,
+  ApiPublicAssistantRoute: ApiPublicAssistantRoute,
+  ApiPublicAssistantEndRoute: ApiPublicAssistantEndRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

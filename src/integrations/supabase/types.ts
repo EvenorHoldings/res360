@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_matching_usage: {
+        Row: {
+          requests: number
+          user_id: string
+          window_start: string
+        }
+        Insert: {
+          requests?: number
+          user_id: string
+          window_start: string
+        }
+        Update: {
+          requests?: number
+          user_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       alerts: {
         Row: {
           channel: string
@@ -2053,6 +2071,7 @@ export type Database = {
         Args: { _listing: string }
         Returns: undefined
       }
+      consume_ai_matching_request: { Args: never; Returns: boolean }
       decide_corrective_action: {
         Args: { _action: string; _close: boolean; _reason: string }
         Returns: undefined

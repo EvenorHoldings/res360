@@ -141,6 +141,13 @@
       "when": 1794379731184,
       "tag": "0019_directory_confidence_leased_and_privacy",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1794380727970,
+      "tag": "0020_security_permission_and_matching_limits",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { canonicalCity,citiesFor as cf,institutionsFor as inf,institutionsFor,matchingInstitutions,PROVINCES } from './institution-catalog';
+import { singleLocationOf,canonicalCity,citiesFor as cf,institutionsFor as inf,institutionsFor,matchingInstitutions,PROVINCES } from './institution-catalog';
 test('all nine provinces remain available',()=>assert.equal(PROVINCES.length,9));
 test('Cape Town institutions include UCT and College of Cape Town',()=>{const names=institutionsFor('Western Cape','Cape Town').map(i=>i.name);assert.ok(names.includes('University of Cape Town'));assert.ok(names.includes('College of Cape Town for TVET'));assert.ok(!names.includes('University of Johannesburg'));});
 test('UNISA remains available across provinces and cities',()=>assert.ok(institutionsFor('Western Cape','Cape Town').some(i=>i.national&&i.name.includes('Unisa'))));
@@ -26,3 +26,7 @@ test('lists no duplicates and one Other town per province', () => {
 test('alias city finds institutions', () => {
     assert.equal(inf('Eastern Cape', 'Port Elizabeth').some(i => i.name === 'Nelson Mandela University'),true);
   });
+test('single-campus institution fills province and city; national does not', () => {
+  assert.deepEqual(singleLocationOf('Rhodes University'), { province: 'Eastern Cape', city: 'Makhanda' });
+  assert.equal(singleLocationOf('University of South Africa (Unisa)'), null);
+});

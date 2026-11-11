@@ -6,9 +6,11 @@
 - [x] Phase 2: staff queue, assigned online inspections, reviewer decisions and corrective-action history.
 - [ ] Authenticated end-to-end verification waits for the requesting user to sign in; session mint found no matching account.
 - [ ] Inspection scheduling waits for an authorised reviewer to publish a locally validated checklist; none is published.
-- [ ] Evidence review waits for a contracted virus-scanning service; uploads remain quarantined.
+- [ ] Evidence review and new document uploads wait for a contracted virus-scanning service; existing files remain quarantined.
 - [x] Phase 3: dated assurance detail and factual card labels without accreditation claims.
 - [x] Phase 3: encrypted private concern submission, consent, emergency guidance and own case status.
 - [x] Phase 3: scoped safety-staff case handling (signed-in staff test waits on a staff account).
 - [x] Hierarchical province/city/institution search and host choices.
 - [x] Refresh Res360's interface to align with Evenor and Moodies; checked public search, mobile navigation, map and rent calculator; page addresses use res360.org and Vercel hosting is unchanged.
+- [ ] Submit a safety report on res360.org and verify the permitted landlord follow-up; blocked by no signed-in account, no approved test residence and no staff-issued redacted response workflow.
+- [ ] Block document uploads pending virus checking and verify the restriction; live Vercel interface update requires its deployment.

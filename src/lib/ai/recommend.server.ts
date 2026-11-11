@@ -2,6 +2,7 @@ import { createOpenAI } from '@ai-sdk/openai';
 import { APICallError, streamText } from 'ai';
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
+import { petFriendlyAllowed } from '@/lib/listing-facts';
 import { createLovableAiGatewayRunIdFetch } from './run-id.server';
 
 const GATEWAY_URL = 'https://ai.gateway.lovable.dev/v1';
@@ -27,7 +28,7 @@ export async function recommendListings(request: string): Promise<RecommendResul
   });
   const { data, error } = await db
     .from('listings')
-    .select('id,title,suburb,location,city,province,institution,distance_km,monthly_rent,deposit_zar,room_type,available_from,lgbtq_friendly,pet_friendly,accessible,nsfas_verified,nsfas_accredited,is_demo,price_on_request,distance_to_campus_km,amenities,description')
+    .select('id,title,suburb,location,city,province,institution,distance_km,monthly_rent,deposit_zar,room_type,available_from,lgbtq_friendly,pet_friendly,residence_type,pet_policy_verified,pet_policy_source_url,accessible,nsfas_verified,nsfas_accredited,is_demo,price_on_request,distance_to_campus_km,amenities,description')
     .eq('status', 'approved')
     .order('created_at', { ascending: false })
     .limit(80);
@@ -35,7 +36,7 @@ export async function recommendListings(request: string): Promise<RecommendResul
   const listings = data ?? [];
   if (listings.length === 0) return { ok: true, summary: 'There are no approved residences to match yet. Check back soon.', matches: [], considered: 0 };
 
-  const compact = listings.map((l) => ({ ...l, description: l.description.slice(0, 240) }));
+  const compact = listings.map((l) => ({ ...l, pet_friendly: petFriendlyAllowed(l), description: l.description.slice(0, 240) }));
   const runIdFetch = createLovableAiGatewayRunIdFetch(undefined);
   const provider = createOpenAI({
     baseURL: GATEWAY_URL,

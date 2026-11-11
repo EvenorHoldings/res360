@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { APICallError, Output, convertToModelMessages, isStepCount, streamText, tool, type UIMessage } from 'ai';
 import { z } from 'zod';
 import type { Database } from '@/integrations/supabase/types';
+import { petFriendlyAllowed } from '@/lib/listing-facts';
 import { createLovableAiGatewayRunIdFetch } from '@/lib/ai/run-id.server';
 import { looksLikeSafety, redact } from './redact';
 
@@ -101,7 +102,7 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
         if (f.province) args['_province'] = f.province; if (f.city) args['_city'] = f.city; if (f.institution) args['_institution'] = f.institution; if (f.query) args['_query'] = f.query;
         const { data, error } = await pub.rpc('search_location_listings', args);
         if (error) return { error: 'Search is unavailable right now.' };
-        const rows = (data ?? []).filter(l => !l.is_demo && (f.max_rent == null || l.price_on_request || l.monthly_rent <= f.max_rent) && (!f.pet || l.pet_friendly) && (!f.lgbtq || l.lgbtq_friendly) && (!f.accessible || l.accessible) && (!f.nsfas_verified || l.nsfas_verified));
+        const rows = (data ?? []).map(l=>({...l,pet_friendly:petFriendlyAllowed(l)})).filter(l => !l.is_demo && (f.max_rent == null || l.price_on_request || l.monthly_rent <= f.max_rent) && (!f.pet || l.pet_friendly) && (!f.lgbtq || l.lgbtq_friendly) && (!f.accessible || l.accessible) && (!f.nsfas_verified || l.nsfas_verified));
         return { count: rows.length, results: rows.slice(0, 8).map(l => ({ id: l.id, url: `/listing/${l.id}`, title: l.title, city: l.city, province: l.province, institution: l.institution, monthly_rent_zar: l.price_on_request ? null : l.monthly_rent, price_note: l.price_on_request ? 'Contact the provider for fees and availability' : null, nsfas: l.nsfas_verified ? 'verified' : l.nsfas_accredited ? 'host-declared' : 'none', distance_to_campus_km: l.distance_to_campus_km, pet_friendly: l.pet_friendly, lgbtq_friendly: l.lgbtq_friendly, accessible: l.accessible })) };
       },
     }),

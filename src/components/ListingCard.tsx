@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { zar, type Listing } from '@/lib/listings';
-import { nsfasLabel, PRICE_ON_REQUEST, sourceLine } from '@/lib/listing-facts';
+import { nsfasLabel, petFriendlyAllowed, PRICE_ON_REQUEST, sourceLine } from '@/lib/listing-facts';
 export function ListingCard({listing}: {listing:Listing}) {
  const [saved,setSaved]=useState(false); const [message,setMessage]=useState('');
  async function save(){const {data:{user}}=await supabase.auth.getUser();if(!user){setMessage('Sign in to save residences.');return;}const {error}=saved?await supabase.from('saved_listings').delete().eq('listing_id',listing.id).eq('user_id',user.id):await supabase.from('saved_listings').insert({listing_id:listing.id,user_id:user.id});if(error)setMessage('Could not update saved residences.');else {setSaved(!saved);setMessage(saved?'Removed from saved':'Saved');}}

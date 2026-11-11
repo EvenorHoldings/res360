@@ -7,6 +7,9 @@ export function nsfasLabel(l: Facts): string | null {
   return null;
 }
 export const PRICE_ON_REQUEST = 'Contact the provider for fees and availability';
+export function petFriendlyAllowed(l: {pet_friendly:boolean; residence_type:string|null; institution:string|null; pet_policy_verified:boolean; pet_policy_source_url:string|null}): boolean {
+  return l.pet_friendly && l.pet_policy_verified && !!l.pet_policy_source_url?.startsWith('https://') && l.institution !== 'University of Cape Town' && ['university_leased','private_student_res','landlord_room','shared_house'].includes(l.residence_type ?? '');
+}
 const SOURCE: Record<string, string> = { host_submitted: 'Submitted by the host', institution_directory: 'Institution directory', admin_import: 'Res360 directory import', demo: 'Demo data' };
 export function sourceLine(l: Facts): string {
   const d = l.last_confirmed_at ?? l.published_at ?? l.created_at;

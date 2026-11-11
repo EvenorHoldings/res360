@@ -24,4 +24,6 @@
 - Institution choices come from src/data/institution-catalog.ts (Province → City → Institution, typed, with aliases) mirrored in the institution_locations table; search goes through the search_location_listings function so alias and city matching stay server-side.
 - Listing status changes by non-admins go only through security-definer workflow functions that set the transaction-local `res360.trusted_status` flag; this keeps the owner guard trigger strict while allowing reconfirmation and expiry.
 - Public listing visibility (approved, reconfirmed within 30 days, demo only when site_settings allows) lives in the listings SELECT policy; this applies to search, map and AI matching from one place.
+- Directory imports use an allowlisted CSV preparation helper and an admin-only strict-match RPC, with confidence enforced in public RLS; this prevents contact leakage and bypassing review through alternate search paths.
+- Institution pet claims use the shared listing-facts predicate and admin-protected policy evidence; this keeps cards, search and AI from interpreting a host checkbox as institution permission.
 - The public assistant runs in TanStack server routes under /api/public/assistant* with its own origin check, rate limits and service-role writes; visitors are anonymous so the route must verify limits itself and only store redacted text.

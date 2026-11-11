@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { supabase } from '@/integrations/supabase/client';
 import { zar, type Listing } from '@/lib/listings';
-import { campusDistance, nsfasLabel, PRICE_ON_REQUEST, sourceLine } from '@/lib/listing-facts';
+import { campusDistance, nsfasLabel, petFriendlyAllowed, PRICE_ON_REQUEST, sourceLine } from '@/lib/listing-facts';
 
 export const Route = createFileRoute('/listing/$id')({
   head: () => ({ meta: [
@@ -60,7 +60,7 @@ function ListingPage() {
                 {listing.is_demo && <span className="rounded-full border border-brand-gold px-2 py-1 font-semibold text-brand-gold">Demo</span>}
                 {nsfasLabel(listing) && <span className="rounded-full border border-photo-line px-2 py-1">{nsfasLabel(listing)}</span>}
                 {listing.lgbtq_friendly && <span className="rounded-full border border-photo-line px-2 py-1">🏳️‍🌈 LGBTQ+ Friendly</span>}
-                {listing.pet_friendly && <span className="rounded-full border border-photo-line px-2 py-1">🐾 Pet Friendly</span>}
+                {petFriendlyAllowed(listing) && <span className="rounded-full border border-photo-line px-2 py-1">🐾 Pet Friendly</span>}
                 {listing.accessible && <span className="rounded-full border border-photo-line px-2 py-1">♿ Accessible</span>}
                 {listing.institution && <span className="rounded-full border border-photo-line px-2 py-1">Near {listing.institution}{campusDistance(listing) != null ? ` · ${campusDistance(listing)} km` : ''}</span>}
               </div>

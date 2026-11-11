@@ -14,10 +14,10 @@ export async function searchListings(filters: SearchFilters) {
   const {data,error}=await supabase.rpc('search_location_listings',args);
   if(error)throw error;
   const rows=(data??[]) as Listing[];
-  const filtered=rows.filter(l=>(filters.maxRent==null||l.monthly_rent<=filters.maxRent)&&(!filters.roomType||l.room_type===filters.roomType)&&(!filters.moveIn||!l.available_from||l.available_from<=filters.moveIn)&&(filters.maxDistance==null||(l.distance_km!=null&&l.distance_km<=filters.maxDistance))&&(!filters.nsfas||l.nsfas_accredited)&&(!filters.lgbtq||l.lgbtq_friendly)&&(!filters.pet||l.pet_friendly)&&(!filters.accessible||l.accessible));
+  const filtered=rows.filter(l=>(filters.maxRent==null||l.price_on_request||l.monthly_rent<=filters.maxRent)&&(!filters.roomType||l.room_type===filters.roomType)&&(!filters.moveIn||!l.available_from||l.available_from<=filters.moveIn)&&(filters.maxDistance==null||((l.distance_to_campus_km??l.distance_km)!=null&&Number(l.distance_to_campus_km??l.distance_km)<=filters.maxDistance))&&(!filters.nsfas||l.nsfas_verified)&&(!filters.lgbtq||l.lgbtq_friendly)&&(!filters.pet||l.pet_friendly)&&(!filters.accessible||l.accessible));
   if(filters.sort==='price_asc')filtered.sort((a,b)=>a.monthly_rent-b.monthly_rent);
   if(filters.sort==='price_desc')filtered.sort((a,b)=>b.monthly_rent-a.monthly_rent);
-  if(filters.sort==='distance')filtered.sort((a,b)=>(a.distance_km??Infinity)-(b.distance_km??Infinity));
+  if(filters.sort==='distance')filtered.sort((a,b)=>Number(a.distance_to_campus_km??a.distance_km??Infinity)-Number(b.distance_to_campus_km??b.distance_km??Infinity));
   return filtered.slice(0,60);
 }
 export const zar = new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR', maximumFractionDigits: 0 });

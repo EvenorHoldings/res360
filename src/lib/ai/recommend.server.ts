@@ -12,7 +12,7 @@ export type RecommendResult =
   | { ok: true; summary: string; matches: Recommendation[]; considered: number }
   | { ok: false; status: number; message: string };
 
-const INSTRUCTIONS = `You are Res360's student accommodation matcher for South Africa.
+const INSTRUCTIONS = `Only call a listing NSFAS-accredited when nsfas_verified is true; if only nsfas_accredited is true, say it is host-declared. Listings with is_demo true are demonstrations and must be described as demo, not real. When price_on_request is true, say fees are available from the provider. You are Res360's student accommodation matcher for South Africa.
 You receive a renter's plain-language request and a JSON list of approved listings (prices in ZAR per month).
 Pick up to 6 listings that best match budget, area/campus and needs. Only use ids from the list. Never invent listings or facts.
 If nothing fits well, return the closest options and say what does not match.
@@ -27,7 +27,7 @@ export async function recommendListings(request: string): Promise<RecommendResul
   });
   const { data, error } = await db
     .from('listings')
-    .select('id,title,suburb,location,city,province,institution,distance_km,monthly_rent,deposit_zar,room_type,available_from,lgbtq_friendly,pet_friendly,accessible,nsfas_accredited,amenities,description')
+    .select('id,title,suburb,location,city,province,institution,distance_km,monthly_rent,deposit_zar,room_type,available_from,lgbtq_friendly,pet_friendly,accessible,nsfas_verified,nsfas_accredited,is_demo,price_on_request,distance_to_campus_km,amenities,description')
     .eq('status', 'approved')
     .order('created_at', { ascending: false })
     .limit(80);

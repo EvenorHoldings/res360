@@ -25,5 +25,5 @@
 - [ ] TVET campus lists (needs DHET/college source); staff review of 17 flagged campus positions (2 still have no position)
 - [x] Stage 2: residence data rules, importer, demo listings, 30-day expiry
 - [ ] Reminder emails for stale listings (alerts saved in-app; email sending not set up)
-- [ ] Stage 3: help centre
+- [x] Stage 3: help centre (10 draft answers await owner confirmation)
 - [ ] Stage 4: AI assistant (re-read full brief section)

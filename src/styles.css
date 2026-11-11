@@ -189,3 +189,15 @@
 .res-hero option, .res-hero optgroup { background: var(--brand-on-dark); color: var(--photo-ink); }
 .res-hero input:not([type="checkbox"]), .res-hero textarea { background: var(--brand-on-dark); color: var(--photo-ink); }
 .res-hero button[aria-pressed="true"] { background: var(--brand-gold); color: var(--photo-ink); }
+
+/* Legacy form surfaces retain their contrast across all existing public pages. */
+form input:not([type="checkbox"]):not([type="range"]), form textarea, form select {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--input);
+}
+.res-hero form input:not([type="checkbox"]):not([type="range"]), .res-hero form textarea {
+  background-color: var(--brand-on-dark);
+  color: var(--photo-ink);
+}
+.res-hero form select { background-color: var(--photo-glass); color: var(--photo-foreground); border-color: var(--photo-line); }

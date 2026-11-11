@@ -36,13 +36,12 @@ export function AiMatcher() {
   }
 
   return (
-    <section aria-labelledby="ai-title" className="mb-6 rounded-[14px] border border-photo-line bg-photo-panel p-5 text-left backdrop-blur-[14px]">
+    <section aria-labelledby="ai-title" className="mb-8 border-b border-border pb-8 text-left">
       <h2 id="ai-title" className="flex items-center gap-2 text-xl"><Wand2 size={20} aria-hidden="true" /> Describe what you need</h2>
-      <p className="mt-1 text-sm opacity-85">Tell us your budget, preferred areas and needs in your own words. AI-powered matching suggests residences and explains why.</p>
       <form onSubmit={submit} className="mt-3 space-y-3">
         <label htmlFor="ai-request" className="sr-only">Your accommodation needs</label>
-        <textarea id="ai-request" value={text} onChange={(e) => setText(e.target.value)} maxLength={1000} placeholder="e.g. Under R5 000 a month near UCT, quiet, pet friendly, available from February" className="min-h-24 w-full rounded-md bg-photo-foreground p-3 text-photo-ink" />
-        <Button type="submit" disabled={busy} className="rounded-full bg-photo-action text-photo-ink hover:bg-photo-action/90">{busy ? 'Finding matches…' : 'Find my matches'}</Button>
+        <textarea id="ai-request" value={text} onChange={(e) => setText(e.target.value)} maxLength={1000} placeholder="e.g. Under R5 000 a month near UCT, quiet, pet friendly, available from February" className="min-h-24 w-full rounded-sm border border-input bg-background p-3 text-foreground" />
+        <Button type="submit" disabled={busy} className="min-h-11 rounded-sm">{busy ? 'Finding matches…' : 'Find my matches'}</Button>
       </form>
       <div aria-live="polite" className="mt-3 text-sm">
         {error && <p className="font-medium">{error}</p>}

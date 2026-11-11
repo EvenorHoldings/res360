@@ -1065,6 +1065,7 @@ export type Database = {
           campus_id: string | null
           city: string | null
           city_id: string | null
+          confidence: string
           created_at: string
           deposit_zar: number | null
           description: string
@@ -1089,6 +1090,8 @@ export type Database = {
           organization_id: string | null
           owner_id: string
           pet_friendly: boolean
+          pet_policy_source_url: string | null
+          pet_policy_verified: boolean
           price_on_request: boolean
           province: string
           province_id: number | null
@@ -1099,6 +1102,7 @@ export type Database = {
           residence_type: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           source: string
+          source_notes: string
           source_url: string | null
           status: string
           suburb: string | null
@@ -1114,6 +1118,7 @@ export type Database = {
           campus_id?: string | null
           city?: string | null
           city_id?: string | null
+          confidence?: string
           created_at?: string
           deposit_zar?: number | null
           description: string
@@ -1138,6 +1143,8 @@ export type Database = {
           organization_id?: string | null
           owner_id?: string
           pet_friendly?: boolean
+          pet_policy_source_url?: string | null
+          pet_policy_verified?: boolean
           price_on_request?: boolean
           province: string
           province_id?: number | null
@@ -1148,6 +1155,7 @@ export type Database = {
           residence_type?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           source?: string
+          source_notes?: string
           source_url?: string | null
           status?: string
           suburb?: string | null
@@ -1163,6 +1171,7 @@ export type Database = {
           campus_id?: string | null
           city?: string | null
           city_id?: string | null
+          confidence?: string
           created_at?: string
           deposit_zar?: number | null
           description?: string
@@ -1187,6 +1196,8 @@ export type Database = {
           organization_id?: string | null
           owner_id?: string
           pet_friendly?: boolean
+          pet_policy_source_url?: string | null
+          pet_policy_verified?: boolean
           price_on_request?: boolean
           province?: string
           province_id?: number | null
@@ -1197,6 +1208,7 @@ export type Database = {
           residence_type?: string | null
           room_type?: Database["public"]["Enums"]["room_type"] | null
           source?: string
+          source_notes?: string
           source_url?: string | null
           status?: string
           suburb?: string | null
@@ -2045,6 +2057,7 @@ export type Database = {
         Args: { _action: string; _close: boolean; _reason: string }
         Returns: undefined
       }
+      directory_safe_text: { Args: { _text: string }; Returns: string }
       evidence_path_listing: { Args: { _name: string }; Returns: string }
       expire_stale_listings: { Args: never; Returns: number }
       get_data_health: { Args: never; Returns: Json }
@@ -2132,6 +2145,7 @@ export type Database = {
           campus_id: string | null
           city: string | null
           city_id: string | null
+          confidence: string
           created_at: string
           deposit_zar: number | null
           description: string
@@ -2156,6 +2170,8 @@ export type Database = {
           organization_id: string | null
           owner_id: string
           pet_friendly: boolean
+          pet_policy_source_url: string | null
+          pet_policy_verified: boolean
           price_on_request: boolean
           province: string
           province_id: number | null
@@ -2166,6 +2182,7 @@ export type Database = {
           residence_type: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           source: string
+          source_notes: string
           source_url: string | null
           status: string
           suburb: string | null
@@ -2196,6 +2213,7 @@ export type Database = {
           campus_id: string | null
           city: string | null
           city_id: string | null
+          confidence: string
           created_at: string
           deposit_zar: number | null
           description: string
@@ -2220,6 +2238,8 @@ export type Database = {
           organization_id: string | null
           owner_id: string
           pet_friendly: boolean
+          pet_policy_source_url: string | null
+          pet_policy_verified: boolean
           price_on_request: boolean
           province: string
           province_id: number | null
@@ -2230,6 +2250,7 @@ export type Database = {
           residence_type: string | null
           room_type: Database["public"]["Enums"]["room_type"] | null
           source: string
+          source_notes: string
           source_url: string | null
           status: string
           suburb: string | null

@@ -20,6 +20,8 @@
 - [ ] Deploy application patches to res360.org; requires access to the existing Vercel deployment.
 
 ## Guardrails brief
+- [ ] Import both supplied CSVs (121 rows) using the staged admin importer; blocked because no auth users or administrator accounts exist. Thirteen University of Johannesburg rows use an unmatched Johannesburg campus and must be rejected, not remapped.
+- [x] Add strict-match admin importer, confidence visibility gates, university-leased categorisation, institution-checked pet labels and two unpublished [CONFIRM] payment-safety answers; 10 tests passed and public Help privacy checked.
 - [x] Stage 1: provinces, cities, aliases, campuses, distance-to-campus, data health panel
 - [x] Stage 1 follow-up: campus picker, auto-fill, campus map positions
 - [ ] TVET campus lists (needs DHET/college source); staff review of 17 flagged campus positions (2 still have no position)

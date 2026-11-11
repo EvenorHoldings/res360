@@ -1,5 +1,6 @@
 import { supabase } from '@/integrations/supabase/client';
 import type { Tables } from '@/integrations/supabase/types';
+import { petFriendlyAllowed } from './listing-facts';
 export type Listing = Tables<'listings'>;
 export type RoomType = 'single' | 'sharing' | 'studio' | 'bachelor';
 export type SearchFilters = { query?: string; province?: string; city?:string; institutionType?:string; institution?: string; maxRent?: number; roomType?: RoomType | undefined; moveIn?: string; maxDistance?: number | undefined; nsfas?: boolean; lgbtq?: boolean; pet?: boolean; accessible?: boolean; sort?: string };
@@ -13,7 +14,7 @@ export async function searchListings(filters: SearchFilters) {
   if(filters.query?.trim())args['_query']=filters.query.trim();
   const {data,error}=await supabase.rpc('search_location_listings',args);
   if(error)throw error;
-  const rows=(data??[]) as Listing[];
+  const rows=((data??[]) as Listing[]).map(l=>({...l,pet_friendly:petFriendlyAllowed(l)}));
   const filtered=rows.filter(l=>(filters.maxRent==null||l.price_on_request||l.monthly_rent<=filters.maxRent)&&(!filters.roomType||l.room_type===filters.roomType)&&(!filters.moveIn||!l.available_from||l.available_from<=filters.moveIn)&&(filters.maxDistance==null||((l.distance_to_campus_km??l.distance_km)!=null&&Number(l.distance_to_campus_km??l.distance_km)<=filters.maxDistance))&&(!filters.nsfas||l.nsfas_verified)&&(!filters.lgbtq||l.lgbtq_friendly)&&(!filters.pet||l.pet_friendly)&&(!filters.accessible||l.accessible));
   if(filters.sort==='price_asc')filtered.sort((a,b)=>a.monthly_rent-b.monthly_rent);
   if(filters.sort==='price_desc')filtered.sort((a,b)=>b.monthly_rent-a.monthly_rent);

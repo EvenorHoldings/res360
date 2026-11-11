@@ -1,0 +1,3 @@
+CREATE POLICY "evidence uploads disabled pending virus scanner" ON storage.objects AS RESTRICTIVE FOR INSERT TO public WITH CHECK (bucket_id <> 'evidence');
+CREATE POLICY "evidence metadata disabled pending virus scanner" ON public.evidence_documents AS RESTRICTIVE FOR INSERT TO public WITH CHECK (false);
+COMMENT ON POLICY "evidence uploads disabled pending virus scanner" ON storage.objects IS 'Fail closed: remove only after a trusted virus scanner and quarantine workflow have been configured and tested.';

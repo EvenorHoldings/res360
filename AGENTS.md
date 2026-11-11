@@ -22,3 +22,5 @@
 - Safety reports use authenticated server functions and versioned AES-GCM ciphertext bound to reporter identity; only assigned MFA safety managers can decrypt, with metadata-only triage and reporter status projections.
 - Public assurance details use a narrow approved-listing RPC projection; never infer verification from landlord IDs or unconfirmed accreditation flags.
 - Institution choices come from src/data/institution-catalog.ts (Province → City → Institution, typed, with aliases) mirrored in the institution_locations table; search goes through the search_location_listings function so alias and city matching stay server-side.
+- Listing status changes by non-admins go only through security-definer workflow functions that set the transaction-local `res360.trusted_status` flag; this keeps the owner guard trigger strict while allowing reconfirmation and expiry.
+- Public listing visibility (approved, reconfirmed within 30 days, demo only when site_settings allows) lives in the listings SELECT policy; this applies to search, map and AI matching from one place.

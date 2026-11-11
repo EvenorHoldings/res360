@@ -1,0 +1,1 @@
+alter table public.campuses add column if not exists geocode_confidence text check (geocode_confidence in ('high','medium','low')), add column if not exists needs_location_review boolean not null default false;

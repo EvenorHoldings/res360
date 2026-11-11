@@ -24,10 +24,11 @@ export function RentCalculator({ initialRent }: { initialRent?: number }) {
     setResult({ total: r * m + d, upfront: r + d, perPerson: r / p, perYear: r * 12, rent: r, months: m, people: p });
   }
 
-  const input = 'mb-3 w-full rounded-md bg-photo-foreground p-[11px] text-[15px] text-photo-ink';
+  const input = 'mb-3 min-h-11 w-full rounded-sm border border-input bg-background p-[11px] text-[15px] text-foreground';
   return (
-    <section aria-labelledby="calcTitle" className="mx-auto w-[min(380px,100%)] rounded-[14px] border border-photo-line bg-photo-panel p-[22px] text-left backdrop-blur-[14px]">
-      <h2 id="calcTitle" className="mb-3.5 text-lg">Rent Calculator</h2>
+    <section aria-labelledby="calcTitle" className="mx-auto w-full max-w-xl text-left">
+      <p className="mb-3 text-xs font-semibold text-primary">A LITTLE FORWARD PLANNING</p>
+      <h2 id="calcTitle" className="mb-6 text-3xl">Rent Calculator</h2>
       <form onSubmit={calculate} noValidate>
         <label htmlFor="rent" className="mb-1 block text-xs opacity-75">Monthly rent (ZAR)</label>
         <input id="rent" type="number" min={0} step={50} inputMode="decimal" placeholder="e.g. 4500" value={rent} onChange={(e) => { setRent(e.target.value); clear(); }} className={input} />
@@ -39,9 +40,9 @@ export function RentCalculator({ initialRent }: { initialRent?: number }) {
           <div><label htmlFor="people" className="mb-1 block text-xs opacity-75">Split between</label>
             <input id="people" type="number" min={1} max={12} step={1} inputMode="numeric" value={people} onChange={(e) => { setPeople(e.target.value); clear(); }} className={input} /></div>
         </div>
-        <Button type="submit" className="w-full rounded-full bg-photo-action text-photo-ink hover:bg-photo-action/90">Calculate Total Rent</Button>
+        <Button type="submit" className="min-h-11 w-full rounded-sm">Calculate Total Rent</Button>
         <div aria-live="polite" className="mt-3 min-h-5 text-sm">
-          {error ? <p className="text-destructive-foreground">{error}</p> : result && (
+          {error ? <p className="text-destructive">{error}</p> : result && (
             <dl className="space-y-1">
               <div className="flex justify-between font-semibold"><dt>Total</dt><dd>{zar.format(result.total)}</dd></div>
               <div className="flex justify-between"><dt>Due upfront</dt><dd>{zar.format(result.upfront)}</dd></div>

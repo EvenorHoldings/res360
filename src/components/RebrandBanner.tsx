@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const KEY = 'res360:rebrand-banner-dismissed';
 const OLD_KEY = 'residence24:rebrand-banner-dismissed';
@@ -18,9 +19,9 @@ export function RebrandBanner() {
   return (
     <div role="region" aria-label="Brand update" className="relative z-40 flex items-center justify-center bg-photo-action px-12 py-2 text-center text-sm font-medium text-photo-ink">
       <span>Residence24 is now Res360. Same team, same service.</span>
-      <button type="button" aria-label="Dismiss brand update" onClick={() => { try { localStorage.setItem(KEY, '1'); } catch { /* storage unavailable */ } setShow(false); }} className="absolute right-2 inline-flex h-9 w-9 items-center justify-center rounded-full hover:bg-photo-foreground/30">
+      <Button variant="ghost" size="icon" type="button" aria-label="Dismiss brand update" onClick={() => { try { localStorage.setItem(KEY, '1'); } catch { /* storage unavailable */ } setShow(false); }} className="absolute right-2 h-9 w-9 rounded-sm text-photo-ink hover:bg-photo-ink/10 hover:text-photo-ink">
         <X size={16} aria-hidden="true" />
-      </button>
+      </Button>
     </div>
   );
 }

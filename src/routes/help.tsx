@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { pageHead } from '@/lib/page-head';
 import { getHelpContent, type HelpArticle } from '@/lib/help.functions';
+import { OPEN_ASSISTANT_EVENT } from '@/components/AssistantWidget';
 import { filterHelp, type Audience } from '@/lib/help-search';
 
 export const Route = createFileRoute('/help')({
@@ -44,6 +45,6 @@ function HelpPage() {
     <Tabs value={audience} onValueChange={v => setAudience(v as Audience)}><TabsList><TabsTrigger value="student">Students</TabsTrigger><TabsTrigger value="landlord">Landlords</TabsTrigger><TabsTrigger value="all">All</TabsTrigger></TabsList></Tabs>
     {shown.length === 0 && <p role="status">No answers match your search. Try other words or <Link to="/contact" className="underline">contact us</Link>.</p>}
     {categories.map(c => { const items = shown.filter(a => a.category_id === c.id); if (!items.length) return null; return <section key={c.id}><h2 className="mt-6 text-xl font-semibold">{c.title}</h2><Accordion type="multiple">{items.map(a => <AccordionItem key={a.id} value={a.id}><AccordionTrigger className="text-left">{a.question}</AccordionTrigger><AccordionContent>{a.answer_md.split(/\n{2,}/).map((p, i) => <p key={i} className="mb-2">{p}</p>)}<Helpful article={a} /></AccordionContent></AccordionItem>)}</Accordion></section>; })}
-    <section className="mt-8 rounded-sm border border-border bg-card p-5"><h2 className="text-lg font-semibold">Still stuck?</h2><p className="mt-1 text-sm"><Link to="/contact" className="underline">Contact the Res360 team</Link> or visit the <Link to="/safety" className="underline">Safety centre</Link> for urgent concerns.</p></section>
+    <section className="mt-8 rounded-sm border border-border bg-card p-5"><h2 className="text-lg font-semibold">Still stuck?</h2><Button type="button" className="mt-2" onClick={() => window.dispatchEvent(new Event(OPEN_ASSISTANT_EVENT))}>Ask the Res360 assistant</Button><p className="mt-1 text-sm"><Link to="/contact" className="underline">Contact the Res360 team</Link> or visit the <Link to="/safety" className="underline">Safety centre</Link> for urgent concerns.</p></section>
   </PageBody>;
 }

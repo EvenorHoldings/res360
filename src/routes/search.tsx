@@ -1,6 +1,8 @@
 import { ClientOnly, createFileRoute } from '@tanstack/react-router';
 import { lazy, Suspense, useMemo, useState } from 'react';
 import { AiMatcher } from '@/components/AiMatcher';
+import { Button } from '@/components/ui/button';
+import { List, Map } from 'lucide-react';
 import { toMapPoints } from '@/lib/geo';
 import { SiteFrame } from '@/components/SiteFrame';
 import { SearchForm } from '@/components/SearchForm';
@@ -37,9 +39,9 @@ function SearchPage() {
         <SearchForm onSearch={(f) => run(f)} busy={busy} />
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           <p role="status" className="text-sm">{error || (rows ? `${rows.length} ${rows.length === 1 ? 'residence' : 'residences'} found` : 'Choose filters and search to see residences.')}</p>
-          <div className="flex flex-wrap items-center gap-3"><div role="group" aria-label="Results view" className="inline-flex rounded-full border border-photo-line bg-photo-glass p-1">{(['list', 'map'] as const).map((v) => <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)} className={`min-h-9 rounded-full px-4 text-sm ${view === v ? 'bg-photo-foreground text-photo-ink' : ''}`}>{v === 'list' ? 'List' : 'Map'}</button>)}</div>
+          <div className="flex flex-wrap items-center gap-3"><div role="group" aria-label="Results view" className="inline-flex rounded-sm border border-border p-1">{(['list', 'map'] as const).map((v) => <Button key={v} variant={view === v ? 'default' : 'ghost'} type="button" aria-pressed={view === v} onClick={() => setView(v)} className="min-h-9 rounded-sm px-4 text-sm">{v === 'list' ? <List/> : <Map/>}{v === 'list' ? 'List' : 'Map'}</Button>)}</div>
           <label className="text-sm">Sort by{' '}
-            <select value={sort} onChange={(e) => { setSort(e.target.value); if (rows) void run(filters, e.target.value); }} className="ml-1 min-h-11 rounded-full bg-photo-foreground px-3 text-photo-ink">
+            <select value={sort} onChange={(e) => { setSort(e.target.value); if (rows) void run(filters, e.target.value); }} className="ml-1 min-h-11 rounded-sm border border-input bg-background px-3 text-foreground">
               <option value="newest">Newest</option><option value="price_asc">Price: low to high</option><option value="price_desc">Price: high to low</option><option value="distance">Distance to campus</option>
             </select>
           </label></div>

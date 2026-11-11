@@ -27,7 +27,7 @@ export async function recommendListings(request: string): Promise<RecommendResul
   });
   const { data, error } = await db
     .from('listings')
-    .select('id,title,suburb,location,city,province,institution,distance_km,monthly_rent,deposit_zar,room_type,available_from,lgbtq_friendly,pet_friendly,accessible,nsfas_accredited,amenities,description')
+    .select('id,title,suburb,location,city,province,institution,distance_km,monthly_rent,deposit_zar,room_type,available_from,lgbtq_friendly,pet_friendly,accessible,nsfas_verified,nsfas_accredited,is_demo,price_on_request,distance_to_campus_km,amenities,description')
     .eq('status', 'approved')
     .order('created_at', { ascending: false })
     .limit(80);

@@ -15,3 +15,6 @@
 - [ ] Submit a safety report on res360.org and verify the permitted landlord follow-up; blocked by no signed-in account, no approved test residence and no staff-issued redacted response workflow.
 - [x] Block document uploads pending virus checking in storage and evidence metadata policies, with a tested interface guard.
 - [ ] Verify disabled upload controls in the live landlord workspace; waits for Vercel deployment and a signed-in landlord account.
+- [x] Initial security audit: patched review exposure, dependency advisories and browser headers; 17 tests passed and initial report generated.
+- [ ] Deep security audit is running; findings require follow-up when the scan completes.
+- [ ] Deploy application patches to res360.org; requires access to the existing Vercel deployment.

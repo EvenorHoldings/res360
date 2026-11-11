@@ -92,6 +92,13 @@
       "when": 1794376203802,
       "tag": "0012_block_evidence_uploads_until_virus_scanning",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1794376395059,
+      "tag": "0013_restrict_reviews_to_approved_residences",
+      "breakpoints": true
     }
   ]
 }

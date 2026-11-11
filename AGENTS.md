@@ -12,7 +12,7 @@
 - Use TanStack file routes and shared SiteFrame for public pages rather than React Router; this preserves the project's SSR router and consistent site navigation.
 - Keep rotating location photography in ResidenceHero on the homepage and use light semantic surfaces in SiteFrame elsewhere; this preserves the slideshow while keeping forms and results legible.
 - Public listings are read through RLS and submissions are owner-scoped pending rows; this keeps unapproved accommodation off public search.
-- AI listing recommendations run in a server function (src/lib/ai/*.server.ts) that reads only approved listings and validates returned ids; this keeps the AI key server-side and prevents invented listings.
+- AI listing recommendations require authenticated server middleware and an atomic database quota before calling the model, read only approved listings and validate returned ids; this prevents unauthenticated spending and invented listings.
 - Search map uses Leaflet + OpenStreetMap, lazy-loaded client-only, falling back to province centres when a listing lacks coordinates; Leaflet cannot run during server rendering.
 - Assurance workspaces live under the authenticated layout and use the existing browser client with RLS and narrowly scoped database workflow functions; this keeps owners isolated and staff mutations MFA-checked.
 - Audit capture is online-only and evidence is quarantined until a trusted scan marks it clean; this prevents unsafe offline overwrites and unscanned document access.
@@ -27,3 +27,4 @@
 - Directory imports use an allowlisted CSV preparation helper and an admin-only strict-match RPC, with confidence enforced in public RLS; this prevents contact leakage and bypassing review through alternate search paths.
 - Institution pet claims use the shared listing-facts predicate and admin-protected policy evidence; this keeps cards, search and AI from interpreting a host checkbox as institution permission.
 - The public assistant runs in TanStack server routes under /api/public/assistant* with its own origin check, rate limits and service-role writes; visitors are anonymous so the route must verify limits itself and only store redacted text.
+- Role helper functions only inspect the caller, full site settings are admin-only, and utility verification requires MFA staff at both policy and trigger boundaries; this prevents role probing, settings exposure and owner verification bypasses.

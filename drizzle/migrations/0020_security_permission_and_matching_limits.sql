@@ -1,0 +1,17 @@
+CREATE OR REPLACE FUNCTION public.has_role(_user_id uuid, _role public.app_role) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT auth.uid() IS NOT NULL AND _user_id=auth.uid() AND EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=auth.uid() AND role=_role) $$;
+CREATE OR REPLACE FUNCTION public.is_assurance_staff(_uid uuid) RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$ SELECT auth.uid() IS NOT NULL AND _uid=auth.uid() AND coalesce(auth.jwt()->>'aal','')='aal2' AND EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=auth.uid() AND role IN ('admin','reviewer')) $$;
+DROP POLICY IF EXISTS "public reads site settings" ON public.site_settings;
+CREATE POLICY "admin reads site settings" ON public.site_settings FOR SELECT TO authenticated USING(public.has_role(auth.uid(),'admin'));
+REVOKE SELECT ON public.site_settings FROM anon;
+ALTER POLICY "owner manages utility" ON public.utility_events USING(public.owns_listing(listing_id,auth.uid()) AND confidence='unverified') WITH CHECK(public.owns_listing(listing_id,auth.uid()) AND source='manager' AND confidence='unverified' AND created_by=auth.uid());
+CREATE OR REPLACE FUNCTION public.guard_utility_verification() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ BEGIN IF NOT public.is_assurance_staff(auth.uid()) THEN IF TG_OP='UPDATE' AND (OLD.confidence IS DISTINCT FROM 'unverified' OR NEW.listing_id IS DISTINCT FROM OLD.listing_id) THEN RAISE EXCEPTION 'Independent MFA staff review required'; END IF; IF NEW.confidence IS DISTINCT FROM 'unverified' OR NEW.source IS DISTINCT FROM 'manager' OR NEW.created_by IS DISTINCT FROM auth.uid() THEN RAISE EXCEPTION 'Owners may only submit their own unverified manager reports'; END IF; END IF; RETURN NEW; END $$;
+CREATE TRIGGER guard_utility_verification BEFORE INSERT OR UPDATE ON public.utility_events FOR EACH ROW EXECUTE FUNCTION public.guard_utility_verification();
+CREATE TABLE public.ai_matching_usage(user_id uuid NOT NULL, window_start timestamptz NOT NULL, requests integer NOT NULL DEFAULT 0, PRIMARY KEY(user_id,window_start));
+GRANT SELECT ON public.ai_matching_usage TO authenticated;
+GRANT ALL ON public.ai_matching_usage TO service_role;
+ALTER TABLE public.ai_matching_usage ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "read own matching usage" ON public.ai_matching_usage FOR SELECT TO authenticated USING(user_id=auth.uid());
+CREATE OR REPLACE FUNCTION public.consume_ai_matching_request() RETURNS boolean LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$ DECLARE n integer; BEGIN IF auth.uid() IS NULL THEN RAISE EXCEPTION 'Sign in required'; END IF; INSERT INTO public.ai_matching_usage(user_id,window_start,requests) VALUES(auth.uid(),date_trunc('hour',now()),1) ON CONFLICT(user_id,window_start) DO UPDATE SET requests=ai_matching_usage.requests+1 WHERE ai_matching_usage.requests<10 RETURNING requests INTO n; RETURN n IS NOT NULL; END $$;
+REVOKE ALL ON FUNCTION public.consume_ai_matching_request() FROM PUBLIC,anon;
+GRANT EXECUTE ON FUNCTION public.consume_ai_matching_request() TO authenticated;
+COMMENT ON TABLE public.ai_matching_usage IS 'Atomic authenticated matching quota: maximum 10 requests per user per UTC clock hour. No renter text is stored.';

@@ -106,6 +106,13 @@
       "when": 1794377337252,
       "tag": "0014_geography_provinces_cities_campuses",
       "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1794377558026,
+      "tag": "0015_campus_geocode_confidence",
+      "breakpoints": true
     }
   ]
 }

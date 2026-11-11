@@ -354,30 +354,36 @@ export type Database = {
       campuses: {
         Row: {
           city_id: string
+          geocode_confidence: string | null
           id: string
           institution_id: string
           is_main: boolean
           lat: number | null
           lng: number | null
           name: string
+          needs_location_review: boolean
         }
         Insert: {
           city_id: string
+          geocode_confidence?: string | null
           id?: string
           institution_id: string
           is_main?: boolean
           lat?: number | null
           lng?: number | null
           name: string
+          needs_location_review?: boolean
         }
         Update: {
           city_id?: string
+          geocode_confidence?: string | null
           id?: string
           institution_id?: string
           is_main?: boolean
           lat?: number | null
           lng?: number | null
           name?: string
+          needs_location_review?: boolean
         }
         Relationships: [
           {

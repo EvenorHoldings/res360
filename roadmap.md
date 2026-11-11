@@ -11,4 +11,4 @@
 - [x] Phase 3: encrypted private concern submission, consent, emergency guidance and own case status.
 - [x] Phase 3: scoped safety-staff case handling (signed-in staff test waits on a staff account).
 - [x] Hierarchical province/city/institution search and host choices.
-- [ ] Refresh Res360's interface to align with Evenor and Moodies, preserving existing functionality; use the live res360.org address without changing Vercel hosting.
+- [x] Refresh Res360's interface to align with Evenor and Moodies; checked public search, mobile navigation, map and rent calculator; page addresses use res360.org and Vercel hosting is unchanged.

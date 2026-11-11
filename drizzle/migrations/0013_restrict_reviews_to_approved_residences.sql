@@ -1,0 +1,4 @@
+DROP POLICY "public reads reviews" ON public.reviews;
+CREATE POLICY "public reads approved residence reviews" ON public.reviews FOR SELECT TO anon, authenticated USING (EXISTS (SELECT 1 FROM public.listings l WHERE l.id = reviews.listing_id AND l.status = 'approved'));
+CREATE POLICY "reviewers read own reviews" ON public.reviews FOR SELECT TO authenticated USING (reviewer_id = auth.uid());
+CREATE POLICY "reviews require approved residence" ON public.reviews AS RESTRICTIVE FOR INSERT TO authenticated WITH CHECK (EXISTS (SELECT 1 FROM public.listings l WHERE l.id = reviews.listing_id AND l.status = 'approved'));

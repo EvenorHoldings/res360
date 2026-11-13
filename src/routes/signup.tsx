@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState, type FormEvent } from 'react';
-import { z } from 'zod';
+import { signupSchema } from '@/lib/signup-schema';
 import { PageBody } from '@/components/SiteFrame';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,15 +11,7 @@ export const Route = createFileRoute('/signup')({
   component: Signup,
 });
 
-export const signupSchema = z.object({
-  full_name: z.string().trim().min(2, 'Enter your name.').max(100),
-  email: z.string().trim().email('Enter a valid email.').max(255),
-  password: z.string().min(10, 'Password must be at least 10 characters.').max(72),
-  role: z.enum(['student', 'host']),
-  terms: z.literal('on', { message: 'Please agree to the Terms and Privacy Policy.' }),
-  age: z.literal('on', { message: 'Please confirm you are 18 or older, or have consent.' }),
-  marketing: z.string().optional(),
-});
+
 
 function Signup() {
   const [msg, setMsg] = useState(''); const [busy, setBusy] = useState(false); const [role, setRole] = useState<'student' | 'host'>('student');

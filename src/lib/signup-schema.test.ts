@@ -1,0 +1,14 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { signupSchema } from './signup-schema';
+import { citiesFor, institutionsFor } from '../data/institution-catalog';
+const ok = { full_name: 'Thandi M', email: 't@uct.ac.za', password: 'abcdefghij', role: 'student', terms: 'on', age: 'on' };
+test('signup accepts a 10-character password with both consents', () => assert.ok(signupSchema.safeParse(ok).success));
+test('signup rejects passwords under 10 characters', () => assert.ok(!signupSchema.safeParse({ ...ok, password: 'abcdefghi' }).success));
+test('signup requires terms consent', () => assert.ok(!signupSchema.safeParse({ ...ok, terms: undefined }).success));
+test('signup requires age consent', () => assert.ok(!signupSchema.safeParse({ ...ok, age: undefined }).success));
+test('signup roles limited to student or host', () => assert.ok(!signupSchema.safeParse({ ...ok, role: 'admin' }).success));
+test('marketing opt-in is optional', () => assert.ok(signupSchema.safeParse(ok).success));
+test('CPUT Bellville is merged into CPUT', () => assert.ok(!institutionsFor().some(i => i.name === 'CPUT Bellville campuses')));
+test('Welkom listed under Free State', () => assert.ok(citiesFor('Free State').includes('Welkom')));
+test('Soshanguve listed under Gauteng', () => assert.ok(citiesFor('Gauteng').includes('Soshanguve')));

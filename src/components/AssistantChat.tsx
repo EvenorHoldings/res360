@@ -9,6 +9,7 @@ import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea 
 import { Shimmer } from '@/components/ai-elements/shimmer';
 import { Tool, ToolContent, ToolHeader, ToolInput, ToolOutput } from '@/components/ai-elements/tool';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/integrations/supabase/client';
 
 function sessionId() {
   let id = sessionStorage.getItem('res360-assistant-session');
@@ -20,7 +21,7 @@ export default function AssistantChat({ onClose }: { onClose: () => void }) {
   const sid = useMemo(sessionId, []);
   const [error, setError] = useState('');
   const box = useRef<HTMLDivElement>(null);
-  const transport = useMemo(() => new DefaultChatTransport({ api: '/api/public/assistant', body: () => ({ sessionId: sid, consent: true, pagePath: window.location.pathname }) }), [sid]);
+  const transport = useMemo(() => new DefaultChatTransport({ api: '/api/public/assistant', headers: async () => { const { data } = await supabase.auth.getSession(); const t = data.session?.access_token; return t ? { Authorization: `Bearer ${t}` } : {}; }, body: () => ({ sessionId: sid, consent: true, pagePath: window.location.pathname }) }), [sid]);
   const { messages, sendMessage, status, stop } = useChat({ id: sid, transport, onError: (e) => {
     let msg = e.message; try { msg = JSON.parse(e.message).error ?? msg; } catch { /* plain text */ }
     setError(msg || 'The assistant could not answer. Please try again.');

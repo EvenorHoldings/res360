@@ -38,6 +38,14 @@ async function admin() { return (await import('@/integrations/supabase/client.se
 function publicDb() {
   return createClient<Database>(process.env['SUPABASE_URL']!, process.env['SUPABASE_PUBLISHABLE_KEY']!, { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } });
 }
+/** Verifies the caller's sign-in token with the auth service; returns their user id or null. */
+async function verifiedUserId(request: Request): Promise<string | null> {
+  const h = request.headers.get('authorization') ?? '';
+  const token = h.startsWith('Bearer ') ? h.slice(7) : '';
+  if (token.split('.').length !== 3) return null;
+  const { data, error } = await publicDb().auth.getUser(token);
+  return error || !data.user ? null : data.user.id;
+}
 function provider(apiKey: string) {
   const runIdFetch = createLovableAiGatewayRunIdFetch(undefined);
   return createOpenAI({ baseURL: GATEWAY_URL, apiKey, headers: { 'Lovable-API-Key': apiKey, 'X-Lovable-AIG-SDK': 'vercel-ai-sdk' }, fetch: runIdFetch.fetch });
@@ -50,6 +58,8 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   if (!originOk(request)) return json(403, 'Not allowed from this site.');
   const apiKey = process.env['LOVABLE_API_KEY'];
   if (!apiKey) return json(500, 'The assistant is not configured yet.');
+  const userId = await verifiedUserId(request);
+  if (!userId) return json(401, 'Please sign in to chat with the assistant.');
   let body: z.infer<typeof chatBody>;
   try { body = chatBody.parse(await request.json()); } catch { return json(400, 'Invalid request.'); }
   const messages = body.messages as UIMessage[];
@@ -66,12 +76,12 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   const { count: repliesToday } = await db.from('support_messages').select('id', { count: 'exact', head: true }).eq('role', 'assistant').gte('created_at', today.toISOString());
   if ((repliesToday ?? 0) >= (settings?.assistant_daily_cost_cap ?? 500)) return json(429, 'The assistant has reached its limit for today. Please use the Help centre or Contact page.');
 
-  let { data: conv } = await db.from('support_conversations').select('id').eq('session_id', body.sessionId).is('ended_at', null).order('created_at', { ascending: false }).limit(1).maybeSingle();
+  let { data: conv } = await db.from('support_conversations').select('id').eq('session_id', body.sessionId).eq('user_id', userId).is('ended_at', null).order('created_at', { ascending: false }).limit(1).maybeSingle();
   if (!conv) {
     const ip = await ipHash(request);
     const { count: recent } = await db.from('support_conversations').select('id', { count: 'exact', head: true }).eq('ip_hash', ip).gte('created_at', since);
     if ((recent ?? 0) >= IP_SESSIONS_PER_HOUR) return json(429, 'Too many new chats from your connection. Please try again in an hour.');
-    const created = await db.from('support_conversations').insert({ session_id: body.sessionId, ip_hash: ip, consent_at: new Date().toISOString(), page_path: body.pagePath ?? null }).select('id').single();
+    const created = await db.from('support_conversations').insert({ session_id: body.sessionId, user_id: userId, ip_hash: ip, consent_at: new Date().toISOString(), page_path: body.pagePath ?? null }).select('id').single();
     if (created.error) return json(500, 'Could not start the chat. Please try again.');
     conv = created.data;
   }

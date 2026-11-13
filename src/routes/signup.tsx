@@ -5,6 +5,7 @@ import { PageBody } from '@/components/SiteFrame';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { pageHead } from '@/lib/page-head';
+import { AltSignIn } from '@/components/AltSignIn';
 
 export const Route = createFileRoute('/signup')({
   head: () => pageHead('Sign up | Res360', 'Create a free Res360 account. Use your .ac.za email to become Student Verified.', '/signup'),
@@ -43,5 +44,6 @@ function Signup() {
       <p role="status" className="text-sm">{msg}</p>
       <p className="text-sm">Already have an account? <Link to="/login" className="underline">Log in</Link></p>
     </form>
+    <AltSignIn />
   </PageBody>;
 }

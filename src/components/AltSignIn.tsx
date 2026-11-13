@@ -17,7 +17,7 @@ export function friendlyOAuthError(message: string) {
 export function AltSignIn({ email }: { email?: string }) {
   const flags = useFeatureFlags(KEYS);
   const [msg, setMsg] = useState(''); const [err, setErr] = useState(false); const [busy, setBusy] = useState(false);
-  if (!flags.google_signin && !flags.microsoft_signin && !flags.magic_link) return null;
+  if (!flags['google_signin'] && !flags['microsoft_signin'] && !flags['magic_link']) return null;
   const say = (m: string, e = false) => { setMsg(m); setErr(e); };
   async function oauth(provider: 'google' | 'microsoft') {
     setBusy(true); say('');
@@ -34,9 +34,9 @@ export function AltSignIn({ email }: { email?: string }) {
   }
   const btn = 'w-full rounded-full bg-photo-action text-photo-ink hover:bg-photo-action/90';
   return <div className="max-w-sm space-y-3 pt-2">
-    {flags.google_signin && <Button type="button" disabled={busy} onClick={() => oauth('google')} className={btn}>Continue with Google</Button>}
-    {flags.microsoft_signin && <Button type="button" disabled={busy} onClick={() => oauth('microsoft')} className={btn}>Continue with Microsoft (university account)</Button>}
-    {flags.magic_link && <p><Button type="button" variant="link" disabled={busy} onClick={magic} className="h-auto px-0 text-photo-foreground underline">Email me a sign-in link</Button></p>}
+    {flags['google_signin'] && <Button type="button" disabled={busy} onClick={() => oauth('google')} className={btn}>Continue with Google</Button>}
+    {flags['microsoft_signin'] && <Button type="button" disabled={busy} onClick={() => oauth('microsoft')} className={btn}>Continue with Microsoft (university account)</Button>}
+    {flags['magic_link'] && <p><Button type="button" variant="link" disabled={busy} onClick={magic} className="h-auto px-0 text-photo-foreground underline">Email me a sign-in link</Button></p>}
     {msg && <p role={err ? 'alert' : 'status'} className={err ? 'text-destructive text-sm' : 'text-sm'}>{msg}</p>}
   </div>;
 }

@@ -26,5 +26,5 @@
 - Public listing visibility (approved, reconfirmed within 30 days, demo only when site_settings allows) lives in the listings SELECT policy; this applies to search, map and AI matching from one place.
 - Directory imports use an allowlisted CSV preparation helper and an admin-only strict-match RPC, with confidence enforced in public RLS; this prevents contact leakage and bypassing review through alternate search paths.
 - Institution pet claims use the shared listing-facts predicate and admin-protected policy evidence; this keeps cards, search and AI from interpreting a host checkbox as institution permission.
-- The public assistant runs in TanStack server routes under /api/public/assistant* with its own origin check, rate limits and service-role writes; visitors are anonymous so the route must verify limits itself and only store redacted text.
+- The assistant runs in TanStack server routes under /api/public/assistant* but verifies the caller's sign-in token itself, binds chats to that user, and keeps origin checks, rate limits and redacted storage; this stops anonymous AI spending.
 - Role helper functions only inspect the caller, full site settings are admin-only, and utility verification requires MFA staff at both policy and trigger boundaries; this prevents role probing, settings exposure and owner verification bypasses.

@@ -45,10 +45,6 @@ function provider(apiKey: string) {
 const reasoningOpts = { openai: { forceReasoning: true, reasoningEffort: 'low', reasoningSummary: 'auto', store: false, include: ['reasoning.encrypted_content'] } } as const;
 
 function textOf(m: UIMessage) { return m.parts.map(p => (p.type === 'text' ? p.text : '')).join(' ').trim(); }
-/** Rebuilds the history with every user turn redacted, so raw PII never reaches the model. */
-function redactedHistory(messages: UIMessage[]): UIMessage[] {
-  return messages.map(m => m.role === 'user' ? { ...m, parts: m.parts.map(p => p.type === 'text' ? { ...p, text: redact(p.text).slice(0, 2000) } : p).filter(p => p.type === 'text') } : m);
-}
 
 export async function handleAssistantChat(request: Request): Promise<Response> {
   if (!originOk(request)) return json(403, 'Not allowed from this site.');
@@ -90,6 +86,9 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   }
   void summariseIdle(apiKey).catch(() => undefined);
 
+  // Rebuild history from server-stored redacted messages; client-supplied roles/parts are never trusted.
+  const { data: stored } = await db.from('support_messages').select('role,content_redacted').eq('conversation_id', conv.id).in('role', ['user', 'assistant']).order('created_at', { ascending: true }).limit(40);
+  const trustedHistory: UIMessage[] = (stored ?? []).map((m, i) => ({ id: `h${i}`, role: m.role === 'assistant' ? 'assistant' : 'user', parts: [{ type: 'text', text: m.content_redacted }] }));
   const emergency = JSON.stringify(settings?.emergency_contacts ?? []);
   const instructions = `${settings?.assistant_system_prompt ?? ''}\n\nEmergency contacts from settings: ${emergency}. Safety centre: /safety. Help centre: /help. Contact: /contact.\nUse search_residences for any accommodation question and get_help_articles for how-to questions. Link every residence you mention as /listing/<id> using only ids returned by search_residences. If a search returns nothing, say so plainly.`;
   const pub = publicDb();
@@ -120,7 +119,7 @@ export async function handleAssistantChat(request: Request): Promise<Response> {
   try {
     const result = streamText({
       model: provider(apiKey).responses(MODEL), instructions, tools, stopWhen: isStepCount(4),
-      messages: await convertToModelMessages(redactedHistory(messages)),
+      messages: await convertToModelMessages(trustedHistory),
       abortSignal: request.signal, providerOptions: reasoningOpts,
     });
     return result.toUIMessageStreamResponse({

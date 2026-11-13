@@ -738,6 +738,24 @@ export type Database = {
           },
         ]
       }
+      feature_flags: {
+        Row: {
+          enabled: boolean
+          key: string
+          updated_at: string | null
+        }
+        Insert: {
+          enabled?: boolean
+          key: string
+          updated_at?: string | null
+        }
+        Update: {
+          enabled?: boolean
+          key?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       geo_backfill_unmatched: {
         Row: {
           city_text: string | null
@@ -1378,39 +1396,57 @@ export type Database = {
       }
       profiles: {
         Row: {
+          age_confirmed_at: string | null
           avatar_url: string | null
           budget_zar: number | null
           created_at: string
           full_name: string | null
           id: string
           lifestyle: string | null
+          marketing_opt_in: boolean
           pets: boolean | null
           phone: string | null
+          phone_verified_at: string | null
+          secondary_email: string | null
+          secondary_email_verified_at: string | null
           student_verified: boolean
+          terms_accepted_at: string | null
           updated_at: string
         }
         Insert: {
+          age_confirmed_at?: string | null
           avatar_url?: string | null
           budget_zar?: number | null
           created_at?: string
           full_name?: string | null
           id: string
           lifestyle?: string | null
+          marketing_opt_in?: boolean
           pets?: boolean | null
           phone?: string | null
+          phone_verified_at?: string | null
+          secondary_email?: string | null
+          secondary_email_verified_at?: string | null
           student_verified?: boolean
+          terms_accepted_at?: string | null
           updated_at?: string
         }
         Update: {
+          age_confirmed_at?: string | null
           avatar_url?: string | null
           budget_zar?: number | null
           created_at?: string
           full_name?: string | null
           id?: string
           lifestyle?: string | null
+          marketing_opt_in?: boolean
           pets?: boolean | null
           phone?: string | null
+          phone_verified_at?: string | null
+          secondary_email?: string | null
+          secondary_email_verified_at?: string | null
           student_verified?: boolean
+          terms_accepted_at?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -1801,6 +1837,8 @@ export type Database = {
           assistant_system_prompt: string
           emergency_contacts: Json
           id: number
+          information_officer_email: string | null
+          information_officer_name: string | null
           show_demo_listings: boolean
           staff_alert_email: string | null
           updated_at: string
@@ -1810,6 +1848,8 @@ export type Database = {
           assistant_system_prompt?: string
           emergency_contacts?: Json
           id?: number
+          information_officer_email?: string | null
+          information_officer_name?: string | null
           show_demo_listings?: boolean
           staff_alert_email?: string | null
           updated_at?: string
@@ -1819,6 +1859,8 @@ export type Database = {
           assistant_system_prompt?: string
           emergency_contacts?: Json
           id?: number
+          information_officer_email?: string | null
+          information_officer_name?: string | null
           show_demo_listings?: boolean
           staff_alert_email?: string | null
           updated_at?: string
@@ -2095,6 +2137,7 @@ export type Database = {
         Args: { _rows: Json; _source: string }
         Returns: Json
       }
+      information_officer: { Args: never; Returns: Json }
       is_assurance_staff: { Args: { _uid: string }; Returns: boolean }
       is_safety_staff: { Args: never; Returns: boolean }
       listing_assurance: {
@@ -2107,11 +2150,16 @@ export type Database = {
           verifications: Json
         }[]
       }
+      my_staff_flags: { Args: never; Returns: Json }
       owns_listing: {
         Args: { _listing: string; _uid: string }
         Returns: boolean
       }
       public_assurance_detail: { Args: { _listing: string }; Returns: Json }
+      record_signup_consent: {
+        Args: { _marketing: boolean; _role: string }
+        Returns: undefined
+      }
       respond_corrective_action: {
         Args: {
           _action: string

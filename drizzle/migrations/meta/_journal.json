@@ -148,6 +148,20 @@
       "when": 1794380727970,
       "tag": "0020_security_permission_and_matching_limits",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1794555969690,
+      "tag": "0021_feature_flags_and_profile_consent",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1794556025906,
+      "tag": "0022_signup_role_and_consent",
+      "breakpoints": true
     }
   ]
 }

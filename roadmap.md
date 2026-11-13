@@ -33,3 +33,10 @@
 - [x] Stage 4: AI assistant, issue summaries, Visitor issues panel, retention, privacy deletion path
 - [ ] Safety email alerts to staff (email sending not set up; staff_alert_email empty)
 - [ ] Brief sections 5-7 (features, operations, acceptance report)
+
+## Compatibility-safe upgrade brief (13 Nov 2026)
+- [x] Step 0: feature switches (all off), new account consent fields, Information Officer settings, search indexes
+- [x] Step 1: footer role links, final privacy wording, forgot/reset password, signup role + consents, /list form, share image + canonical + Organization data, chip icons, province order, CPUT merge, campus towns, assistant on all pages
+- [ ] Information Officer name/email: waits on owner to supply
+- [ ] Auth redirect list for res360.org / www: owner must add in auth settings; www→apex redirect added for Vercel
+- [ ] Step 2 (Microsoft sign-in, email domain features), steps 3–6

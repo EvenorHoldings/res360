@@ -28,3 +28,7 @@
 - Institution pet claims use the shared listing-facts predicate and admin-protected policy evidence; this keeps cards, search and AI from interpreting a host checkbox as institution permission.
 - The assistant runs in TanStack server routes under /api/public/assistant* but verifies the caller's sign-in token itself, binds chats to that user, and keeps origin checks, rate limits and redacted storage; this stops anonymous AI spending.
 - Role helper functions only inspect the caller, full site settings are admin-only, and utility verification requires MFA staff at both policy and trigger boundaries; this prevents role probing, settings exposure and owner verification bypasses.
+- New features ship behind rows in public.feature_flags (public read, admin write, default off); this lets staff switch features off without a redeploy.
+- Footer staff/host links use the my_staff_flags() caller-only RPC for visibility only; protected routes and RLS still enforce access.
+- Signup role/consent choices travel in auth metadata and are applied by handle_new_user (role limited to student or landlord); this works with email confirmation where no session exists at signup.
+- The pending-listing form lives in ListingSubmitForm and is shared by the home page and /list; this keeps one validated submission path.

@@ -24,7 +24,8 @@ export const INSTITUTION_CATALOG:InstitutionEntry[]=[
     "aliases": [
       "Cape Peninsula University of Technology (CPUT)",
       "Cape Peninsula University of Technology",
-      "CPUT"
+      "CPUT",
+      "CPUT Bellville campuses"
     ],
     "national": false,
     "locationScope": "city"
@@ -39,18 +40,6 @@ export const INSTITUTION_CATALOG:InstitutionEntry[]=[
       "University of the Western Cape (UWC)",
       "University of the Western Cape",
       "UWC"
-    ],
-    "national": false,
-    "locationScope": "city"
-  },
-  {
-    "id": "catalog-004",
-    "province": "Western Cape",
-    "city": "Bellville",
-    "name": "CPUT Bellville campuses",
-    "type": "Public University",
-    "aliases": [
-      "CPUT Bellville campuses"
     ],
     "national": false,
     "locationScope": "city"
@@ -1868,7 +1857,9 @@ export const CITY_ALIASES:Record<string,string>={'Port Elizabeth':'Gqeberha','Gq
 const ALIAS_LOWER=Object.fromEntries(Object.entries(CITY_ALIASES).map(([k,v])=>[k.toLowerCase(),v]));
 /** Resolves aliases and legacy "Other X" entries to the canonical city name. */
 export function canonicalCity(city:string,province=''){const c=city.trim();if(/^Other\b/i.test(c))return `Other town in ${province||c.replace(/^Other\s+(town in\s+)?/i,'').replace(/^KZN$/,'KwaZulu-Natal')}`;return ALIAS_LOWER[c.toLowerCase()]??c;}
-export function citiesFor(province:string){const list=INSTITUTION_CATALOG.filter(i=>!province||i.province===province).map(i=>canonicalCity(i.city,i.province));const named=Array.from(new Set(list.filter(c=>!c.startsWith('Other town'))));named.sort();const others=province?[`Other town in ${province}`]:PROVINCES.map(p=>`Other town in ${p}`);return [...named,...others];}
+/** Campus towns that have no single-city catalog entry of their own. */
+export const EXTRA_CAMPUS_CITIES:Record<string,string[]>={'Free State':['Welkom','Phuthaditjhaba'],'Gauteng':['Soshanguve','Ga-Rankuwa','Soweto','Roodepoort'],'Eastern Cape':['Butterworth','Komani'],'KwaZulu-Natal':['Richards Bay','Ladysmith'],'Mpumalanga':['Emalahleni','Siyabuswa'],'Western Cape':['Wellington'],'North West':['Klerksdorp']};
+export function citiesFor(province:string){const list=[...INSTITUTION_CATALOG.filter(i=>!province||i.province===province).map(i=>canonicalCity(i.city,i.province)),...Object.entries(EXTRA_CAMPUS_CITIES).filter(([p])=>!province||p===province).flatMap(([,c])=>c)];const named=Array.from(new Set(list.filter(c=>!c.startsWith('Other town'))));named.sort();const others=province?[`Other town in ${province}`]:PROVINCES.map(p=>`Other town in ${p}`);return [...named,...others];}
 export function institutionsFor(province='',city='',type=''){const want=city?canonicalCity(city,province):'';return INSTITUTION_CATALOG.filter(i=>(i.national||((!province||i.province===province)&&(!want||want.startsWith('Other town')||canonicalCity(i.city,i.province)===want)))&&(!type||i.type===type));}
 export function matchingInstitutions(query:string){const q=query.trim().toLowerCase().replace(/^near\s+/,'');return q?INSTITUTION_CATALOG.filter(i=>[i.name,...i.aliases].some(a=>a.toLowerCase().includes(q))):[];}
 /** Province and city for an institution with a single location; null when it spans several or is national. */
